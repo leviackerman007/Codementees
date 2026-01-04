@@ -26,7 +26,7 @@ export default function Navbar() {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="sticky top-0 z-[60] bg-white border-b">
+      <nav className="sticky top-0 z-60 bg-white border-b">
         <div className="flex justify-between items-center px-6 md:px-10 py-4">
           {/* Logo */}
           <Link to="/" className="text-xl font-bold text-gray-900">
@@ -80,7 +80,7 @@ export default function Navbar() {
 
             {/* SIDEBAR PANEL */}
             <motion.div
-              className="fixed top-[60px] right-0 h-[calc(100%-64px)] w-72 bg-white shadow-xl z-[55] md:hidden"
+              className="fixed top-15 right-0 h-[calc(100%-64px)] w-72 bg-white shadow-xl z-55 md:hidden"
 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
