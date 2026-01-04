@@ -1,16 +1,14 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import HeroSection from './sections/HeroSection'
-import Navbar from './components/Navbar'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 
-function App() {
-
-
+export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <HeroSection />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </BrowserRouter>
-  )
+  );
 }
-
-export default App
