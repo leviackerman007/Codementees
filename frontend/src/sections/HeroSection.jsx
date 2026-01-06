@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import heroImage from '../assets/hero-image.png';
+import {Link} from "react-router-dom"
 
 export default function HeroSection() {
     return (
@@ -25,9 +26,11 @@ export default function HeroSection() {
 
 
                         <div className="flex justify-center gap-4">
-                            <button className="bg-black text-white px-6 py-3 rounded-md hover:bg-fray-800 transition">
+                            <Link 
+                            to="/courses"
+                            className="inline-block bg-black text-white px-6 py-3 rounded-md hover:bg-fray-800 transition">
                                 Explore Programs
-                            </button>
+                            </Link>
                             <button className="border border-gray-300 px-6 py-3 rounded-md hover:bg-gray-100 transition">
                                 Talk to Mentor
                             </button>
