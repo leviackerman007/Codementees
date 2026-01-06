@@ -1,31 +1,7 @@
-export default function Courses() {
-    const courses = [
-        {
-            title: "Full Stack Development",
-            desc: "Master frontend and backend development with real-world projects.",
-            duration: "6 Months",
-            level: "Beginner to Advanced",
-        },
-        {
-            title: "Data Science & Machine Learning",
-            desc: "Learn data analysis, machine learning models, and deployment.",
-            duration: "5 Months",
-            level: "Intermediate",
-        },
-        {
-            title: "DSA & Interview Preparation",
-            desc: "Strengthen problem-solving skills and crack technical interviews.",
-            duration: "4 Months",
-            level: "All Levels",
-        },
-        {
-            title: "Career Guidance Program",
-            desc: "Resume building, mock interviews, and career mentoring.",
-            duration: "2 Months",
-            level: "All Levels",
-        },
-    ];
+import {Link} from "react-router-dom"
+import { coursesData } from "../data/coursesData";
 
+export default function Courses() {
 
     return (
         <>
@@ -44,7 +20,7 @@ export default function Courses() {
 
                     {/* COURSES GRID */}
                     <div className="grid md:grid-cols-2 gap-8">
-                        {courses.map((course, idx) => (
+                        {coursesData.map((course, idx) => (
                             <div
                                 key={idx}
                                 className="border rounded-lg p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -53,7 +29,7 @@ export default function Courses() {
                                 </h3>
 
                                 <p className="text-gray-600 mb-4">
-                                    {course.desc}
+                                    {course.description}
                                 </p>
 
                                 <div className="text-sm text-gray-500 mb-6 space-y-1">
@@ -61,9 +37,9 @@ export default function Courses() {
                                     <p><span className="font-medium">Level:</span> {course.level}</p>
                                 </div>
 
-                                <button className="text-black font-medium inline-flex items-center gap-1 hover:gap-2 transition-all">
+                                <Link to={`/courses/${course.id}`} className="text-black font-medium inline-flex items-center gap-1 hover:gap-2 transition-all">
                                     View Details →
-                                </button>
+                                </Link>
                             </div>
                         ))}
                     </div>
