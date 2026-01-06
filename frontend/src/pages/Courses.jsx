@@ -47,7 +47,7 @@ export default function Courses() {
                         {courses.map((course, idx) => (
                             <div
                                 key={idx}
-                                className="border rounded-lg p-6 hover:shadow-md  transition">
+                                className="border rounded-lg p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <h3 className="text-xl font-semibold mb-3 texrt-gray-900">
                                     {course.title}
                                 </h3>
@@ -61,7 +61,7 @@ export default function Courses() {
                                     <p><span className="font-medium">Level:</span> {course.level}</p>
                                 </div>
 
-                                <button className="text-black font-medium hover:underline">
+                                <button className="text-black font-medium inline-flex items-center gap-1 hover:gap-2 transition-all">
                                     View Details →
                                 </button>
                             </div>
