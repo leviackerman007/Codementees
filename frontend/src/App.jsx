@@ -6,7 +6,7 @@ import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
-
+import About from "./pages/About"
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,6 +18,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/courses" element={<Courses />}/>
         <Route path="/courses/:id" element={<CourseDetail />}/>
+        <Route path="/about" element={<About />}/>
       </Routes>
     </BrowserRouter>
   );
