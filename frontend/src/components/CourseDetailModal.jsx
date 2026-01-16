@@ -1,22 +1,38 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { coursesData } from "../data/coursesData"
-import { moveItem } from "framer-motion";
+import { motion } from "framer-motion"
 
 export default function CourseDetailModal() {
     const { id } = useParams();
     const navigate = useNavigate();
+
     const course = coursesData.find(c => c.id === id);
     if (!course) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
+
             {/* BACKDROP */}
-            <div
+            <motion.div
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 onClick={() => navigate(-1)}
             />
             {/* MODAL */}
-            <div className="relative bg-white rounded-xl max-w-2xl w-full mx-6 p-8 shadow-xl">
+            <motion.div
+                className="relative bg-white rounded-xl max-w-2xl w-full mx-6 p-8 shadow-xl"
+                initial={{ y: 40, opacity: 0, scale: 0.95 }}
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                exit={{ y: 40, opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+            >
                 {/* CLOSE BUTTON */}
                 <button
                     onClick={() => navigate(-1)}
@@ -46,8 +62,8 @@ export default function CourseDetailModal() {
                     ))}
                 </ul>
 
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
 
     )
 }
