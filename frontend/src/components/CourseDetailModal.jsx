@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { coursesData } from "../data/coursesData"
 import { motion } from "framer-motion"
+import { useEffect } from "react";
+
 
 export default function CourseDetailModal() {
     const { id } = useParams();
@@ -8,6 +10,36 @@ export default function CourseDetailModal() {
 
     const course = coursesData.find(c => c.id === id);
     if (!course) return null;
+
+    const listVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 5 },
+        show: { opacity: 1, y: 0 }
+    };
+    useEffect(() => {
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') {
+                navigate(-1);
+            }
+        };
+
+        window.addEventListener('keydown', handleEsc);
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+            document.body.style.overflow = 'auto';
+        }
+    }, [navigate]);
 
     return (
         <motion.div
@@ -28,6 +60,8 @@ export default function CourseDetailModal() {
             {/* MODAL */}
             <motion.div
                 className="relative bg-white rounded-xl max-w-2xl w-full mx-6 p-8 shadow-xl"
+                tabIndex={-1}
+                autoFocus
                 initial={{ y: 40, opacity: 0, scale: 0.95 }}
                 animate={{ y: 0, opacity: 1, scale: 1 }}
                 exit={{ y: 40, opacity: 0, scale: 0.95 }}
@@ -56,11 +90,16 @@ export default function CourseDetailModal() {
                     What you'll learn
                 </h3>
 
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                <motion.ul
+                    variants={listVariants}
+                    initial="hidden"
+                    animate="show"
+                    className="list-disc list-inside text-gray-600 space-y-1"
+                >
                     {course.includes.map((item, idx) => (
-                        <li key={idx}>{item}</li>
+                        <motion.li key={idx} variants={itemVariants}>{item}</motion.li>
                     ))}
-                </ul>
+                </motion.ul>
 
             </motion.div>
         </motion.div>
