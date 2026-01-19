@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -8,20 +7,23 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import CourseDetailModal from "./components/CourseDetailModal";
 import About from "./pages/About"
+import MainLayout from "./layouts/MainLayout";
+
 export default function App() {
-  const location=useLocation();
-  const backgroundLocation=location.state?.backgroundLocation;
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
   return (
     <>
-      <Navbar />
       <Routes location={backgroundLocation || location}>
-        <Route path="/" element={<Home />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/courses/:id" element={<CourseDetail />} />
-        <Route path="/about" element={<About />} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/courses/:id" element={<CourseDetail />} />
+        </Route>
       </Routes>
 
       {backgroundLocation && (

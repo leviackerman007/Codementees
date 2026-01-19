@@ -1,3 +1,5 @@
+import icons from "simple-icons/icons.json";
+
 export const coursesData = [
   {
     id: "full-stack-development",
@@ -6,6 +8,8 @@ export const coursesData = [
       "Master frontend and backend development with hands-on projects, real-world use cases, and mentor guidance.",
     duration: "6 Months",
     level: "Beginner to Advanced",
+    iconKey: 'code',
+    techStack: ['react', 'nodejs', 'mongodb'],
     includes: [
       "HTML, CSS, JavaScript",
       "React & Backend Frameworks",
@@ -21,6 +25,8 @@ export const coursesData = [
       "Learn data analysis, machine learning models, and deployment using real datasets.",
     duration: "5 Months",
     level: "Intermediate",
+    iconKey: 'data',
+    techStack: ['python', 'numpy', 'pandas', 'sklearn'],
     includes: [
       "Python & Data Analysis",
       "Machine Learning Models",
@@ -36,6 +42,8 @@ export const coursesData = [
       "Strengthen problem-solving skills and prepare for technical interviews.",
     duration: "4 Months",
     level: "All Levels",
+    iconKey: 'dsa',
+    techStack: ['python'],
     includes: [
       "Data Structures",
       "Algorithms",

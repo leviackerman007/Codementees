@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { coursesData } from "../data/coursesData";
+import TechIcon from "../components/TechIcon";
+import { techIconMap } from "../utils/techIcons";
 
 export default function Courses() {
   const location = useLocation();
@@ -35,6 +37,20 @@ export default function Courses() {
               <p className="text-gray-600 mb-4">
                 {course.description}
               </p>
+
+              {/* TECH ICONS */}
+              <div className="flex items-center gap-3 mb-6">
+                <span className="text-sm font-medium text-gray-500">
+                  Technologies:
+                </span>
+                {course.techStack.map((tech) => {
+                  const icon = techIconMap[tech];
+                  if (!icon) return null;
+                  return (
+                    <TechIcon key={tech} icon={icon} />
+                  )
+                })}
+              </div>
 
               <div className="text-sm text-gray-500 mb-6 space-y-1">
                 <p>
