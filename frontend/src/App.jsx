@@ -31,6 +31,8 @@ export default function App() {
           <Route path="/courses/:id" element={<CourseDetailModal />} />
         </Routes>
       )}
+
+
     </>
   );
 }
