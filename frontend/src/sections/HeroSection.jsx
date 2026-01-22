@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 
 export default function HeroSection() {
     return (
-        <section className="bg-white">
+        <section className="surface">
             <div className="max-w-7xl mx-auto px-6 pt-28 pb-20">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
 
@@ -13,13 +13,13 @@ export default function HeroSection() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                         className="max-w-6xl mx-auto px-6 py-24 pb-20 text-center">
-                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+                        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
                             Learn Industry Ready Skills
                             <br className='hidden md:block' />
                             with Expert Mentorship
                         </h1>
 
-                        <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+                        <p className="max-w-2xl mx-auto mb-8">
                             Structured programs, real-world projects, and guidance from
                             professionals to help you become job-ready.
                         </p>
@@ -28,10 +28,10 @@ export default function HeroSection() {
                         <div className="flex justify-center gap-4">
                             <Link 
                             to="/courses"
-                            className="inline-block bg-black text-white px-6 py-3 rounded-md hover:bg-fray-800 transition">
+                            className="btn btn-primary">
                                 Explore Programs
                             </Link>
-                            <button className="border border-gray-300 px-6 py-3 rounded-md hover:bg-gray-100 transition">
+                            <button className="btn btn-secondary">
                                 Talk to Mentor
                             </button>
                         </div>

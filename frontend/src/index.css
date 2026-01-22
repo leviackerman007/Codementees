@@ -1,2 +1,155 @@
+/* src/index.css */
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *))
+
+/* 1. Define the manual toggle logic for Tailwind */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: 255 255 255;
+  --surface: 249 250 251;
+  --text-primary: 17 24 39;
+  --text-secondary: 75 85 99;
+  --border: 229 231 235;
+
+  /* 2. Overwrite variables when the .dark class is active */
+  @variant dark {
+    --bg: 17 24 39;
+    --surface: 31 41 55;
+    --text-primary: 243 244 246;
+    --text-secondary: 156 163 175;
+    --border: 55 65 81;
+  }
+}
+
+/* 3. APPLY TO GLOBAL BODY (This is what you might be missing) */
+body {
+  background-color: rgb(var(--bg));
+  color: rgb(var(--text-primary));
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgb(var(--text-primary));
+}
+
+p {
+  color: rgb(var(--text-secondary));
+}
+
+.text-muted {
+  color: rgb(var(--text-secondary));
+  opacity: 0.85;
+}
+
+/* ======================
+      BUTTON SYSTEM
+====================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Primary action */
+.btn-primary {
+  background-color: rgb(var(--text-primary));
+  color: rgb(var(--bg));
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Secondary action */
+.btn-secondary {
+  border: 1px solid rgb(var(--border));
+  color: rgb(var(--text-primary));
+}
+
+.btn-secondary:hover {
+  background-color: rgb(var(--surface));
+}
+
+/* ===============================
+   SURFACES
+=============================== */
+
+/* Page-level surface */
+.surface {
+  background-color: rgb(var(--bg));
+}
+
+/* Elevated surface (cards, panels) */
+.surface-elevated {
+  background-color: rgb(var(--surface));
+  border: 1px solid rgb(var(--border));
+}
+
+/* Card styling */
+.card {
+  background-color: rgb(var(--surface));
+  border: 1px solid rgb(var(--border));
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Card Description */
+
+.card-desc {
+  color: rgb(var(--test-secondary));
+  margin-top: 0.5rem;
+}
+
+/* -------------------------------
+   TEXT COLOR COMPATIBILITY
+-------------------------------- */
+
+/* Headings inside cards */
+.card .text-gray-900 {
+  color: rgb(var(--text-primary));
+}
+
+/* Descriptions / metadata */
+.card .text-gray-600,
+.card .text-gray-500 {
+  color: rgb(var(--text-secondary));
+}
+
+/* Labels like "Duration", "Level" */
+.card span.font-medium {
+  color: rgb(var(--text-primary));
+}
+
+/* -------------------------------
+   LINKS INSIDE CARDS
+-------------------------------- */
+
+.card a {
+  color: rgb(var(--text-primary));
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
