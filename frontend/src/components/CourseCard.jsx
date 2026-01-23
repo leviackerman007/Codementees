@@ -4,9 +4,28 @@ import { techIconMap } from "../utils/techIcons";
 
 export default function CourseCard({ course, variant = "primary" }) {
     const location = useLocation();
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty(
+            "--x",
+            `${e.clientX - rect.left}px`
+        );
+        e.currentTarget.style.setProperty(
+            "--y",
+            `${e.clientY - rect.top}px`
+        );
+    };
 
+    const handleMouseLeave = (e) => {
+        e.currentTarget.style.removeProperty("--x");
+        e.currentTarget.style.removeProperty("--y");
+    };
     return (
-        <div className={`card card-${variant} flex flex-col h-full`}>
+        <div
+            className={`card card-${variant} flex flex-col h-full`}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+        >
 
             {/* CONTENT */}
             <div className="flex flex-col flex-1">
