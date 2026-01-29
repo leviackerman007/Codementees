@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import app from './app.js';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
