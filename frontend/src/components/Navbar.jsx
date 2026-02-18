@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 
 /* Animated Burger / Close Icon */
 const MenuIcon = ({ open }) => (
@@ -24,6 +25,7 @@ const MenuIcon = ({ open }) => (
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
   return (
     <>
       {/* NAVBAR */}
@@ -53,16 +55,32 @@ export default function Navbar() {
             >
               {theme === "dark" ? "🌙" : "☀️"}
             </button>
-            <Link to="/login"
-              className="text-secondary hover:text-primary">
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="btn btn-primary"
-            >
-              Join Now
-            </Link>
+
+            {user ? (
+              <>
+                <span className="text-secondary text-sm">
+                  Hi, {user.name}
+                </span>
+
+                <button
+                  onClick={logout}
+                  className="btn btn-secondary"
+                >
+                  Logout
+                </button>
+              </>) : (<>
+                <Link to="/login"
+                  className="text-secondary hover:text-primary">
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="btn btn-primary"
+                >
+                  Join Now
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Burger */}
@@ -112,19 +130,38 @@ export default function Navbar() {
                   <span>Toggle Theme</span>
                 </button>
 
+                {user ? (
+                  <>
+                    <span className="text-sm">
+                      Hi, {user.name}
+                    </span>
 
-                <div className="pt-4 border-t border-default flex flex-col gap-3">
-                  <Link onClick={() => setIsOpen(false)} to="/login">
-                    Login
-                  </Link>
-                  <Link
-                    onClick={() => setIsOpen(false)}
-                    to="/register"
-                    className="btn btn-primary text-center"
-                  >
-                    Join Now
-                  </Link>
-                </div>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsOpen(false);
+                      }}
+                      className="btn btn-secondary"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="pt-4 border-t border-default flex flex-col gap-3">
+                      <Link onClick={() => setIsOpen(false)} to="/login">
+                        Login
+                      </Link>
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        to="/register"
+                        className="btn btn-primary text-center"
+                      >
+                        Join Now
+                      </Link>
+                    </div>
+                  </>
+                )}
               </div>
             </motion.div>
           </>

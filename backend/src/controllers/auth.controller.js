@@ -27,7 +27,7 @@ export const signup = async (req, res) => {
 
         res.status(201).json({
             user: {
-                if: user._id,
+                id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
