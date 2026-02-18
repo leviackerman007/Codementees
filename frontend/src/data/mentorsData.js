@@ -19,4 +19,13 @@ export const mentorsData = [
     experience: "6+ years",
     image: reactIcon,
   },
+  {
+    id: "m3",
+    name: "Aditya Gupta",
+    role: "CEO",
+    company: "Graviton",
+    expertise: ["Python", "ML", "Data Analysis",'Quant Analyst'],
+    experience: "22+ years",
+    image: reactIcon,
+  },
 ];
