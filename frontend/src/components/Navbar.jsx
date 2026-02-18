@@ -154,7 +154,7 @@ export default function Navbar() {
                       </Link>
                       <Link
                         onClick={() => setIsOpen(false)}
-                        to="/register"
+                        to="/signup"
                         className="btn btn-primary text-center"
                       >
                         Join Now

@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Mentors from "./pages/Mentors";
 import Login from "./pages/Login";
-
+import Signup from "./pages/Signup";
 export default function App() {
   const location = useLocation();
   const state = location.state;
@@ -24,6 +24,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/mentors" element={<Mentors />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
       </Routes>
 
