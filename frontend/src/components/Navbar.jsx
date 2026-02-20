@@ -46,11 +46,11 @@ export default function Navbar() {
 
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex gap-4 items-center">
+          <div className="hidden md:flex gap-4 items-center relative">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-md
-             hover:bg-surface transition"
+             hover:opacity-80 transition"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? "🌙" : "☀️"}

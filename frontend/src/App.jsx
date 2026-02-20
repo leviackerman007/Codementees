@@ -5,6 +5,7 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import RoleRoute from "./components/RoleRoute";
 import Mentors from "./pages/Mentors";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -22,7 +23,11 @@ export default function App() {
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/mentors" element={<Mentors />} />
+          <Route path="/mentors" element={
+            <RoleRoute allowedRoles={['admin', 'mentor']}>
+              <Mentors />
+            </RoleRoute>
+          } />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
