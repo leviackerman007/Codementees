@@ -4,7 +4,7 @@ export const createCourse=async (req,res)=>{
     try{
         const course=await Course.create({
             ...req.body,
-            createdBy:req.user.id
+            createdBy:req.user._id
         });
         res.status(201).json(course);
     }catch(error){

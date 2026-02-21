@@ -5,7 +5,7 @@ export const protect = async (req, res, next) => {
     try {
         let token;
 
-        if (req.headers.authorization && 
+        if (req.headers.authorization &&
             req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(" ")[1];
         }
@@ -18,12 +18,25 @@ export const protect = async (req, res, next) => {
 
         req.user = await User.findById(decoded.id).select("-password")
 
-        if(!req.user){
-            return res.status(401).json({message:"User not found"})
+        if (!req.user) {
+            return res.status(401).json({ message: "User not found" })
         }
         next();
 
-    }catch(error){
-        res.status(401).json({message:"Invalid token"});
+    } catch (error) {
+        res.status(401).json({ message: "Invalid token" });
     }
 }
+
+export const restrictTo = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({ message: "Not authenticated" });
+        }
+
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "Forbidden: You don't have permission to access this resource" });
+        }
+        next();
+    };
+};

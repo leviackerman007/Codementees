@@ -219,3 +219,16 @@ HIGHLIGHT SECTION
     rgb(var(--bg))
   )
 }
+
+.input {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(var(--border));
+  background-color: rgb(var(--surface));
+  color: rgb(var(--text-primary));
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgb(var(--text-primary));
+}

@@ -13,7 +13,7 @@ import Signup from "./pages/Signup";
 import MentorDashboard from "./pages/Dashboard/MentorDashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import DashboardHome from "./pages/Dashboard/DashboardHome";
-
+import DashboardLayout from "./layouts/DashboardLayout";
 
 export default function App() {
   const location = useLocation();
@@ -33,7 +33,7 @@ export default function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <DashboardHome />
+                <DashboardLayout />
               </ProtectedRoute>
             }
           >
