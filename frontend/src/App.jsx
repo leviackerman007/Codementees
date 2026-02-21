@@ -5,11 +5,14 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import RoleRoute from "./components/RoleRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import RoleGuard from "./routes/RoleGuard";
 import Mentors from "./pages/Mentors";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import MentorDashboard from "./pages/MentorDashboard";
+import MentorDashboard from "./pages/Dashboard/MentorDashboard";
+import AdminDashboard from "./pages/Dashboard/AdminDashboard";
+import DashboardHome from "./pages/Dashboard/DashboardHome";
 
 
 export default function App() {
@@ -26,16 +29,41 @@ export default function App() {
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/mentors" element={
-            <RoleRoute allowedRoles={['admin', 'mentor']}>
-              <Mentors />
-            </RoleRoute>
-          } />
-          <Route path="/dashboard/mentor" element={
-            <RoleRoute allowedRoles={['admin', 'mentor']}>
-              <MentorDashboard />
-            </RoleRoute>
-          } />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardHome />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<DashboardHome />} />
+
+            <Route
+              path="mentor"
+              element={
+                <RoleGuard allowedRoles={['mentor', 'admin']}>
+                  <MentorDashboard />
+                </RoleGuard>
+              }
+            />
+
+            <Route
+              path="admin"
+              element={
+                <RoleGuard allowedRoles={['admin']}>
+                  <AdminDashboard />
+                </RoleGuard>
+              }
+            />
+
+          </Route>
+            <Route
+              path="/mentors" element={
+                <RoleGuard allowedRoles={['admin', 'mentor']}>
+                  <Mentors />
+                </RoleGuard>
+              } />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
