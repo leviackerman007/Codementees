@@ -9,6 +9,9 @@ import RoleRoute from "./components/RoleRoute";
 import Mentors from "./pages/Mentors";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import MentorDashboard from "./pages/MentorDashboard";
+
+
 export default function App() {
   const location = useLocation();
   const state = location.state;
@@ -26,6 +29,11 @@ export default function App() {
           <Route path="/mentors" element={
             <RoleRoute allowedRoles={['admin', 'mentor']}>
               <Mentors />
+            </RoleRoute>
+          } />
+          <Route path="/dashboard/mentor" element={
+            <RoleRoute allowedRoles={['admin', 'mentor']}>
+              <MentorDashboard />
             </RoleRoute>
           } />
           <Route path="/login" element={<Login />} />

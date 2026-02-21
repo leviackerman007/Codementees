@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
+import ProfileDropdown from "./ProfileDropdown";
 
 /* Animated Burger / Close Icon */
 const MenuIcon = ({ open }) => (
@@ -49,8 +50,7 @@ export default function Navbar() {
           <div className="hidden md:flex gap-4 items-center relative">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-md
-             hover:opacity-80 transition"
+              className="p-2 rounded-md hover:opacity-80 transition"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? "🌙" : "☀️"}
@@ -58,16 +58,13 @@ export default function Navbar() {
 
             {user ? (
               <>
-                <span className="text-secondary text-sm">
-                  Hi, {user.name}
-                </span>
-
-                <button
-                  onClick={logout}
-                  className="btn btn-secondary"
+                <Link
+                  to='/dashboard'
+                  className="px-5 py-2 rounded-full border border-default hover:bg-surface transition"
                 >
-                  Logout
-                </button>
+                  Dashboard
+                </Link>
+                <ProfileDropdown user={user} logout={logout} />
               </>) : (<>
                 <Link to="/login"
                   className="text-secondary hover:text-primary">
@@ -83,14 +80,23 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Burger */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsOpen(prev => !prev)}
-            aria-label="Open Menu"
-          >
-            <MenuIcon open={isOpen} />
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            {user && (
+              <Link
+                to="/dashboard"
+                className="px-4 py-1.5 rounded-full border border-default text-sm"
+              >
+                Dashboard
+              </Link>
+            )}
+            {/* Mobile Burger */}
+            <button
+              onClick={() => setIsOpen(prev => !prev)}
+              aria-label="Open Menu"
+            >
+              <MenuIcon open={isOpen} />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -109,7 +115,7 @@ export default function Navbar() {
 
             {/* SIDEBAR PANEL */}
             <motion.div
-              className="fixed top-15 right-0 h-[calc(100%-50px)] w-72 surface-elevated shadow-xl z-55 md:hidden"
+              className="fixed top-[64px] right-0 h-[calc(100%-50px)] w-72 surface-elevated shadow-xl z-[60] md:hidden"
 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -117,6 +123,34 @@ export default function Navbar() {
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <div className="px-6 py-6 flex flex-col gap-5 font-medium text-secondary">
+                {user && (
+                  <div className="flex items-center gap-3 pb-4 border-b border-default">
+                    <div className="w-10 h-10 rounded-full bg-primary text-bg flex items-center justify-center font-semibold">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-medium">{user.name}</p>
+                      <p className="text-xs text-muted">{user.email}</p>
+                    </div>
+                  </div>
+                )}
+                {user && (
+                  <>
+                    <Link onClick={() => setIsOpen(false)} to="/dashboard">
+                      Dashboard
+                    </Link>
+                    {user.role==="mentor" && (
+                      <Link onClick={()=>setIsOpen(false)} to="/dashboard/mentor">
+                        Mentor Panel
+                      </Link>
+                    )}
+                    {user.role==="admin" && (
+                      <Link onClick={()=>setIsOpen(false)} to="/dashboard/admin">
+                        Admin Panel
+                      </Link>
+                    )}
+                  </>
+                )}
                 <Link onClick={() => setIsOpen(false)} to="/courses">Programs</Link>
                 <Link onClick={() => setIsOpen(false)} to="/mentors">Mentors</Link>
                 <Link onClick={() => setIsOpen(false)} to="/about">About</Link>
