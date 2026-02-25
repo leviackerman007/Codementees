@@ -13,10 +13,13 @@ const enrollmentSchema = new mongoose.Schema(
             ref: 'Course',
             required: true,
         },
-
+        enrolledAt:{
+            type: Date,
+            default: Date.now,
+        },
         paymentStatus:{
             type:String,
-            enum:["pending","paid"],
+            enum:["pending","completed"],
             default:"pending",
         },
     },

@@ -2,6 +2,11 @@ import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/generateToken.js';
 
+const validateEmail=(email)=>{
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
 export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;

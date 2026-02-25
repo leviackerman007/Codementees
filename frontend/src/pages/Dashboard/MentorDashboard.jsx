@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 
 export default function MentorDashboard() {
@@ -40,10 +41,12 @@ export default function MentorDashboard() {
     }
   }
 
-
+  const { user, loading } = useAuth();
   useEffect(() => {
-    fetchCourses();
-  }, [])
+    if (!loading && user) {
+      fetchCourses();
+    }
+  }, [loading, user])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
