@@ -2,35 +2,52 @@ import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/generateToken.js';
 
-const validateEmail=(email)=>{
+const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-export const signup = async (req, res) => {
+const validatePassword = (password) => password?.length >= 6;
+
+export const signup = async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, confirmPassword, role } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'All fields are required' });
+        if (!name?.trim() || !email?.trim() || !password?.trim()) {
+            return res.status(400).json({ success: false, message: 'Name, email, and password are required' });
         }
 
-        const exists = await User.findOne({ email });
-        if (exists) {
-            return res.status(400).json({ message: 'Email already registered' });
+        if (!validateEmail(email)) {
+            return res.status(400).json({ success: false, message: 'Invalid email format' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 12);
+        if (!validatePassword(password)) {
+            return res.status(400).json({ success: false, message: "Password must be at least 6 characters" })
+        }
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, message: "Passwords do not match" })
+        }
+
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
+        if (existingUser) {
+            return res.status(409).json({ success: false, message: 'Email already registered' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const user = await User.create({
-            name,
-            email,
+            name: name.trim(),
+            email: email.toLowerCase(),
             password: hashedPassword,
+            role: role || "user"
         });
 
         const token = generateToken(user._id);
 
         res.status(201).json({
+            message: true,
             user: {
                 id: user._id,
                 name: user.name,
@@ -40,27 +57,30 @@ export const signup = async (req, res) => {
             token,
         });
     } catch (err) {
-        res.status(500).json({ message: 'Server Error' });
+        next(err);
     }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({ message: 'All fields required' });
+        if (!email?.trim() || !password?.trim()) {
+            return res.status(400).json({ success: false, message: 'All fields required' });
         }
-        const user = await User.findOne({ email }).select('+password');
 
+        if (!validateEmail(email)) {
+            return res.status(400).json({ success: false, message: 'Invalid email format' });
+        }
+
+        const user = await User.findOne({ email: email.toLowerCase() });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
-        const match = await bcrypt.compare(password, user.password);
-
-        if (!match) {
-            return res.status(400).send({ message: "Invalid Credentials" });
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
         const token = generateToken(user._id);
@@ -74,7 +94,19 @@ export const login = async (req, res) => {
             },
             token,
         });
-    } catch {
-        res.status(500).json({ message: 'Server Error' });
+    } catch (error) {
+        next(error);
     }
 };
+
+export const getProfile = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id).select("-password");
+        res.json({
+            success: true,
+            user,
+        })
+    } catch (error) {
+        next(error);
+    }
+}
