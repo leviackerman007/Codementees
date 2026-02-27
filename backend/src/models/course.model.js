@@ -39,6 +39,31 @@ const courseSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+
+        syllabus: [
+            {
+                _id: mongoose.Schema.Types.ObjectId,
+                title: String,
+                description: String,
+                topics: [String],
+            }
+        ],
+
+        content: [
+            {
+                _id: mongoose.Schema.Types.ObjectId,
+                title: String,
+                description: String,
+                videoUrl: String,
+                resourceUrl: String,
+                type: {
+                    type: String,
+                    enum: ["video", "text", "resource"],
+                    default: "video"
+                }
+            }
+        ],
+
         createdBy:{
             type: mongoose.Schema.Types.ObjectId,
             ref:'User',

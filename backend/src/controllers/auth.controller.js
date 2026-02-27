@@ -47,7 +47,8 @@ export const signup = async (req, res, next) => {
         const token = generateToken(user._id);
 
         res.status(201).json({
-            message: true,
+            success: true,
+            message: 'Account created successfully',
             user: {
                 id: user._id,
                 name: user.name,
@@ -73,8 +74,12 @@ export const login = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'Invalid email format' });
         }
 
-        const user = await User.findOne({ email: email.toLowerCase() });
+        const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
         if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid email or password' });
+        }
+
+        if (!user.password) {
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 

@@ -1,6 +1,13 @@
 import axios from 'axios';
+
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const api=axios.create({
-    baseURL:"http://localhost:5000/api",
+    baseURL,
+    timeout:10000,
+    headers:{
+        'Content-Type': 'application/json',
+    },
 });
 
 api.interceptors.request.use((config)=>{
@@ -10,17 +17,20 @@ api.interceptors.request.use((config)=>{
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
+},(error)=>{
+    return Promise.reject(error);
 })
 
-const BASE_URL = 'http://localhost:5000/api';
+api.interceptors.response.use((response)=>response, (error)=>{
+    const requestUrl = error.config?.url || "";
+    const isAuthRoute = requestUrl.includes("/auth/login") || requestUrl.includes("/auth/signup");
 
-export const signupUser = async (data) => {
-    const res = await api.post("/auth/signup",data);
-    return res.data;
-}
+    if(error.response?.status===401 && !isAuthRoute){
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href="/login";
+    }
+    return Promise.reject(error);
+})
 
-export const loginUser = async (data) =>{
-    const res = await api.post("/auth/login",data);
-    return res.data;
-}
 export default api;

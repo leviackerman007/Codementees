@@ -1,5 +1,6 @@
 /* src/index.css */
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap");
 
 /* 1. Define the manual toggle logic for Tailwind */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -10,6 +11,19 @@
   --text-primary: 17 24 39;
   --text-secondary: 75 85 99;
   --border: 229 231 235;
+  --accent: 12 74 110;
+  --accent-strong: 15 118 110;
+  --accent-warm: 249 115 22;
+
+  --dash-bg: 245 247 250;
+  --dash-panel: 255 255 255;
+  --dash-ink: 12 18 28;
+  --dash-muted: 85 94 106;
+  --dash-border: 221 227 235;
+  --dash-gradient: linear-gradient(135deg, #0f766e 0%, #22c55e 45%, #f97316 100%);
+  --dash-grid: radial-gradient(circle at 20% 20%, rgba(15, 118, 110, 0.08), transparent 40%),
+               radial-gradient(circle at 80% 30%, rgba(249, 115, 22, 0.08), transparent 45%),
+               linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(245, 247, 250, 0.9));
 
   /* 2. Overwrite variables when the .dark class is active */
   @variant dark {
@@ -18,6 +32,15 @@
     --text-primary: 243 244 246;
     --text-secondary: 156 163 175;
     --border: 55 65 81;
+    --dash-bg: 11 15 20;
+    --dash-panel: 17 24 39;
+    --dash-ink: 241 245 249;
+    --dash-muted: 148 163 184;
+    --dash-border: 36 44 59;
+    --dash-gradient: linear-gradient(135deg, #0ea5a4 0%, #22c55e 45%, #f97316 100%);
+    --dash-grid: radial-gradient(circle at 15% 20%, rgba(14, 165, 164, 0.12), transparent 45%),
+                 radial-gradient(circle at 85% 30%, rgba(249, 115, 22, 0.12), transparent 45%),
+                 linear-gradient(180deg, rgba(11, 15, 20, 0.9), rgba(15, 23, 42, 0.95));
   }
 }
 
@@ -28,6 +51,136 @@ body {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+  font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.dashboard-shell {
+  background: var(--dash-grid);
+  color: rgb(var(--dash-ink));
+  min-height: 100vh;
+}
+
+.dashboard-sidebar {
+  background-color: rgb(var(--dash-panel));
+  border-right: 1px solid rgb(var(--dash-border));
+}
+
+.dashboard-brand {
+  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.75rem;
+  color: rgb(var(--dash-muted));
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-link:hover {
+  background-color: rgba(15, 118, 110, 0.08);
+  color: rgb(var(--dash-ink));
+  transform: translateX(2px);
+}
+
+.dashboard-link-active {
+  background: rgba(15, 118, 110, 0.15);
+  color: rgb(var(--dash-ink));
+  font-weight: 600;
+}
+
+.dashboard-topbar {
+  background-color: rgba(var(--dash-panel), 0.92);
+  border-bottom: 1px solid rgb(var(--dash-border));
+  backdrop-filter: blur(10px);
+}
+
+.dashboard-main {
+  padding: 2rem;
+}
+
+.panel {
+  background-color: rgb(var(--dash-panel));
+  border: 1px solid rgb(var(--dash-border));
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.14), rgba(34, 197, 94, 0.08));
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  border-radius: 1rem;
+  padding: 1.2rem 1.5rem;
+}
+
+.stat-number {
+  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: rgb(var(--dash-ink));
+}
+
+.badge-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  background: rgba(249, 115, 22, 0.12);
+  color: rgb(var(--accent-warm));
+}
+
+.dash-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.dash-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.dash-card {
+  border: 1px solid rgb(var(--dash-border));
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgb(var(--dash-panel));
+}
+
+.dash-cta {
+  background: var(--dash-gradient);
+  color: #fff;
+  border-radius: 0.8rem;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  border: none;
+}
+
+.fade-in {
+  animation: fadeInUp 0.5s ease both;
+}
+
+.stagger > * {
+  animation: fadeInUp 0.5s ease both;
+}
+
+.stagger > *:nth-child(2) { animation-delay: 0.05s; }
+.stagger > *:nth-child(3) { animation-delay: 0.1s; }
+.stagger > *:nth-child(4) { animation-delay: 0.15s; }
+.stagger > *:nth-child(5) { animation-delay: 0.2s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 h1,
@@ -46,6 +199,42 @@ p {
 .text-muted {
   color: rgb(var(--text-secondary));
   opacity: 0.85;
+}
+
+/* -------------------------------
+   UTILITY TOKENS
+-------------------------------- */
+
+.text-primary {
+  color: rgb(var(--text-primary));
+}
+
+.text-secondary {
+  color: rgb(var(--text-secondary));
+}
+
+.text-bg {
+  color: rgb(var(--bg));
+}
+
+.bg-primary {
+  background-color: rgb(var(--text-primary));
+}
+
+.bg-surface {
+  background-color: rgb(var(--surface));
+}
+
+.border-default {
+  border-color: rgb(var(--border));
+}
+
+.hover\:text-primary:hover {
+  color: rgb(var(--text-primary));
+}
+
+.hover\:bg-surface:hover {
+  background-color: rgb(var(--surface));
 }
 
 /* ======================
@@ -231,4 +420,52 @@ HIGHLIGHT SECTION
 .input:focus {
   outline: none;
   border-color: rgb(var(--text-primary));
+}
+
+/* ==============================
+   DASHBOARD HEADER LINKS & BUTTONS
+============================== */
+
+.dash-link {
+  color: rgb(var(--dash-muted));
+  transition: color 0.2s ease;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+}
+
+.dash-link:hover {
+  color: rgb(var(--dash-ink));
+  background-color: rgba(15, 118, 110, 0.08);
+}
+
+.dark .dash-link:hover {
+  color: rgb(var(--dash-ink));
+}
+
+.dash-btn {
+  background: var(--dash-gradient);
+  color: #fff;
+  border-radius: 0.6rem;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dash-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.dash-btn:active {
+  transform: translateY(0);
+}
+
+.text-dash-ink {
+  color: rgb(var(--dash-ink));
+}
+
+.dark .text-dash-ink {
+  color: rgb(var(--dash-ink));
 }

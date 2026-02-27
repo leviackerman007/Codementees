@@ -1,6 +1,12 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import api from "../../services/api";
+import {
+  createCourse,
+  getMyCourses,
+  toggleCoursePublish,
+  deleteCourse
+} from "../../services/courseService";
+import EditCourseModal from "../../components/EditCourseModal";
 
 export default function MentorDashboard() {
   const [form, setForm] = useState({
@@ -15,38 +21,61 @@ export default function MentorDashboard() {
 
   const [courses, setCourses] = useState([]);
 
+  const [coursesLoading, setCoursesLoading] = useState(false);
+
+  const [error, setError] = useState("");
+
+  const [editingCourse, setEditingCourse] = useState(null);
+
   const fetchCourses = async () => {
     try {
-      const res = await api.get("/courses/my-courses")
-      setCourses(res.data);
+      setCoursesLoading(true);
+      const res = await getMyCourses();
+      setCourses(res.courses || []);
+      setError("");
     } catch (err) {
-      console.error("Failed to fetch courses", err);
+      setError(err.message || "Failed to fetch courses");
+    } finally {
+      setCoursesLoading(false);
     }
-  }
+  };
 
   const togglePublish = async (id) => {
     try {
-      await api.patch(`/courses/${id}/toggle`);
+      await toggleCoursePublish(id);
       fetchCourses();
     } catch (err) {
-      alert("Failed to update course status");
+      setError(err.message || "Only admins can publish courses");
     }
-  }
-  const deleteCourse = async (id) => {
+  };
+  const handleDeleteCourse = async (id) => {
     try {
-      await api.delete(`/courses/${id}`);
+      await deleteCourse(id);
       fetchCourses();
     } catch (err) {
-      alert("Failed to delete course");
+      setError(err.message || "Failed to delete course");
     }
-  }
+  };
 
-  const { user, loading } = useAuth();
+  const handleEditCourse = (course) => {
+    setEditingCourse(course);
+  };
+
+  const handleCloseEditModal = () => {
+    setEditingCourse(null);
+  };
+
+  const handleSaveEdit = () => {
+    fetchCourses();
+    setEditingCourse(null);
+  };
+
+  const { user, loading: authLoading } = useAuth();
   useEffect(() => {
-    if (!loading && user) {
+    if (!authLoading && user) {
       fetchCourses();
     }
-  }, [loading, user])
+  }, [authLoading, user])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -54,73 +83,111 @@ export default function MentorDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     try {
-      await api.post("/courses", {
-        ...form,
-        techStack: form.techStack.split(","),
-        includes: form.includes.split(","),
+      await createCourse({
+        title: form.title.trim(),
+        description: form.description.trim(),
+        duration: form.duration.trim(),
+        level: form.level,
+        techStack: form.techStack.split(",").map((item) => item.trim()).filter(Boolean),
+        includes: form.includes.split(",").map((item) => item.trim()).filter(Boolean),
+        price: Number(form.price)
       });
 
-      alert("Course Created Successfully");
+      setForm({
+        title: "",
+        description: "",
+        duration: "",
+        level: "",
+        techStack: "",
+        includes: "",
+        price: ""
+      });
+
       fetchCourses();
     } catch (err) {
-      console.log(err.response?.data)
-      alert(err.response?.data?.message || "Course Creation Failed");
+      setError(err.message || "Course creation failed");
     }
   };
 
   return (
 
-    <div>
+    <div className="space-y-8 fade-in">
 
       {/* CREATE FORM */}
-      <div className="max-w-2xl">
-        <h1 className="text-2xl font-semibold mb-6">
-          Create New Course
-        </h1>
+      <div className="panel">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-semibold">Create New Course</h1>
+          <span className="badge-soft">Mentor Tools</span>
+        </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {error && (
+          <div className="mb-4 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
           <input
             name="title"
             placeholder="Course Title"
             className="input"
+            value={form.title}
             onChange={handleChange}
+            required
           />
 
           <textarea
             name="description"
             placeholder="Course Description"
-            className="input"
+            className="input md:col-span-2"
+            value={form.description}
             onChange={handleChange}
+            required
           />
 
           <input
             name="duration"
             placeholder="Duration (e.g. 8 weeks)"
             className="input"
+            value={form.duration}
             onChange={handleChange}
+            required
           />
 
-          <input
+          <select
             name="level"
-            placeholder="Level (Beginner/Advanced)"
             className="input"
+            value={form.level}
             onChange={handleChange}
-          />
+            required
+          >
+            <option value="" disabled>
+              Select Level
+            </option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
 
           <input
             name="techStack"
             placeholder="Tech Stack (comma separated)"
             className="input"
+            value={form.techStack}
             onChange={handleChange}
+            required
           />
 
           <input
             name="includes"
             placeholder="Includes (comma separated)"
             className="input"
+            value={form.includes}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -128,27 +195,34 @@ export default function MentorDashboard() {
             type="number"
             placeholder="Price"
             className="input"
+            value={form.price}
             onChange={handleChange}
+            required
           />
 
-          <button type="submit" className="btn btn-primary">
-            Create Course
-          </button>
+          <div className="md:col-span-2 flex justify-end">
+            <button type="submit" className="dash-btn">
+              Create Course
+            </button>
+          </div>
         </form>
       </div>
 
       {/* MY COURSES */}
-      <div>
-        <h2 className="text-xl font-semibold mb-6">
-          My Courses
-        </h2>
+      <div className="panel">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold">My Courses</h2>
+          <span className="text-xs text-muted">💡 Admin publishes courses</span>
+        </div>
 
-        {courses.length === 0 ? (
+        {coursesLoading ? (
+          <div className="py-8 text-sm text-muted">Loading courses...</div>
+        ) : courses.length === 0 ? (
           <p>No courses created yet.</p>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {courses.map((course) => (
-              <div key={course._id} className="card flex flex-col gap-4">
+              <div key={course._id} className="dash-card flex flex-col gap-4">
                 <h3 className="font-semibold mb-2">
                   {course.title}
                 </h3>
@@ -162,16 +236,16 @@ export default function MentorDashboard() {
                 <div className="text-xs mb-4">
                   Status: {course.isPublished ? "Published" : "Draft"}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center justify-between gap-2">
                   <button
-                    onClick={() => togglePublish(course._id)}
-                    className="btn btn-secondary text-sm"
+                    onClick={() => handleEditCourse(course)}
+                    className="btn btn-primary text-sm flex-1"
                   >
-                    {course.isPublished ? "Unpublish" : "Publish"}
+                    Edit Content
                   </button>
                   <button
-                    onClick={() => deleteCourse(course._id)}
-                    className="btn btn-primary text-sm"
+                    onClick={() => handleDeleteCourse(course._id)}
+                    className="btn btn-secondary text-sm px-4"
                   >
                     Delete
                   </button>
@@ -182,6 +256,14 @@ export default function MentorDashboard() {
           </div>
         )}
       </div>
+
+      {editingCourse && (
+        <EditCourseModal
+          course={editingCourse}
+          onClose={handleCloseEditModal}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 }

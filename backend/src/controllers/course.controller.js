@@ -1,15 +1,21 @@
 import Course from "../models/course.model.js";
 import Enrollment from "../models/enrollment.model.js";
+import mongoose from "mongoose";
 
 const validateCourse = (data) => {
     const errors = [];
     if (!data.title?.trim()) errors.push("Title is required");
     if (!data.description?.trim()) errors.push("Description is required");
+    if (!data.duration?.trim()) errors.push("Duration is required");
+    if (!data.level) errors.push("Level is required");
     if (typeof data.price !== "number" || data.price < 0) {
         errors.push("Valid price is required");
     }
     if (!Array.isArray(data.techStack) || data.techStack.length === 0) {
         errors.push("Tech stack is required")
+    }
+    if (!Array.isArray(data.includes) || data.includes.length === 0) {
+        errors.push("Includes is required")
     }
     return errors;
 }
@@ -94,7 +100,7 @@ export const updateCourse = async (req, res, next) => {
         if (!course) {
             return res.status(404).json({ success: false, message: "Course not found" });
         }
-        if (course.createdBy.toString() !== req.user._id.toString()) {
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
             return res.status(403).json({ success: false, message: "Not authorized to update this course" })
         }
         const errors = validateCourse(req.body);
@@ -127,12 +133,13 @@ export const deleteCourse = async (req, res, next) => {
             return res.status(404).json({ success: false, message: "Course not found" });
         }
 
-        if (course.createdBy.toString() !== req.user._id.toString()) {
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
             return res.status(403).json({ success: false, message: "Not authorized to delete this course" })
         }
 
         await Course.findByIdAndDelete(req.params.id);
         await Enrollment.deleteMany({ course: req.params.id });
+        res.json({ success: true, message: 'Course deleted successfully' });
 
     } catch (error) {
         next(error);
@@ -146,7 +153,7 @@ export const togglePublishedCourse = async (req, res, next) => {
         if (!course) {
             return res.status(404).json({ success: false, message: "Course not found" });
         }
-        if (course.createdBy.toString() !== req.user._id.toString()) {
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
             return res.status(403).json({ success: false, message: "Not authorized" });
         }
         course.isPublished = !course.isPublished;
@@ -202,3 +209,131 @@ export const getEnrolledCourses=async(req,res,next)=>{
         next(error);
     }
 }
+
+// ADD/UPDATE SYLLABUS
+export const updateCourseSyllabus = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { syllabus } = req.body;
+
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ success: false, message: "Course not found" });
+        }
+
+        // Check authorization
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
+
+        // Add ObjectIds if not present
+        const syllabusWithIds = syllabus.map(item => ({
+            ...item,
+            _id: item._id || new mongoose.Types.ObjectId()
+        }));
+
+        course.syllabus = syllabusWithIds;
+        await course.save();
+
+        res.json({ success: true, message: "Syllabus updated successfully", course });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ADD/UPDATE COURSE CONTENT
+export const updateCourseContent = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { content } = req.body;
+
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ success: false, message: "Course not found" });
+        }
+
+        // Check authorization
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
+
+        // Add ObjectIds if not present
+        const contentWithIds = content.map(item => ({
+            ...item,
+            _id: item._id || new mongoose.Types.ObjectId()
+        }));
+
+        course.content = contentWithIds;
+        await course.save();
+
+        res.json({ success: true, message: "Content updated successfully", course });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ADD SINGLE SYLLABUS ITEM
+export const addSyllabusItem = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { title, description, topics } = req.body;
+
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ success: false, message: "Course not found" });
+        }
+
+        // Check authorization
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
+
+        const syllabusItem = {
+            _id: new mongoose.Types.ObjectId(),
+            title,
+            description,
+            topics: Array.isArray(topics) ? topics : []
+        };
+
+        course.syllabus.push(syllabusItem);
+        await course.save();
+
+        res.json({ success: true, message: "Syllabus item added", course });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ADD SINGLE CONTENT ITEM
+export const addContentItem = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { title, description, videoUrl, resourceUrl, type } = req.body;
+
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ success: false, message: "Course not found" });
+        }
+
+        // Check authorization
+        if (course.createdBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
+
+        const contentItem = {
+            _id: new mongoose.Types.ObjectId(),
+            title,
+            description,
+            videoUrl,
+            resourceUrl,
+            type: type || 'video'
+        };
+
+        course.content.push(contentItem);
+        await course.save();
+
+        res.json({ success: true, message: "Content item added", course });
+    } catch (error) {
+        next(error);
+    }
+};

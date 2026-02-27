@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { signupUser } from "../services/api";
+import { signupUser } from "../services/authService.js";
 import { useAuth } from "../context/AuthContext";
 
 export default function Signup() {
@@ -8,6 +8,7 @@ export default function Signup() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [error, setError] = useState("");
@@ -26,16 +27,22 @@ export default function Signup() {
     setLoading(true);
 
     try {
+      if (form.password !== form.confirmPassword) {
+        setError("Passwords do not match");
+        setLoading(false);
+        return;
+      }
+
       const data = await signupUser(form);
 
-      if (data.token) {
-        login(data);          // auto login after signup
+      if (data?.token) {
+        login(data.user, data.token);
         navigate("/");
       } else {
-        setError(data.message || "Signup failed");
+        setError(data?.message || "Signup failed");
       }
-    } catch {
-      setError("Something went wrong");
+    } catch (error) {
+      setError(error.message || "Something went wrong");
     }
 
     setLoading(false);
@@ -93,6 +100,20 @@ export default function Signup() {
               name="password"
               required
               value={form.password}
+              onChange={handleChange}
+              className="w-full border border-default rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-muted block mb-1">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              required
+              value={form.confirmPassword}
               onChange={handleChange}
               className="w-full border border-default rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />

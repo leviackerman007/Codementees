@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginUser } from "../services/api.js";
+import { loginUser } from "../services/authService.js";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
@@ -25,16 +25,16 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const data = await loginUser(form);
+            const data = await loginUser({ email: form.email, password: form.password });
 
-            if (data.token) {
-                login(data);
+            if (data?.token) {
+                login(data.user, data.token);
                 navigate("/");
             } else {
-                setError(data.message || "Login failed");
+                setError(data?.message || "Login failed");
             }
-        } catch {
-            setError("Something went wrong");
+        } catch (error) {
+            setError(error.message || "Something went wrong");
         }
 
         setLoading(false);

@@ -59,7 +59,7 @@ export default function CourseCard({ course, variant = "primary" }) {
 
             {/* CTA — ALWAYS STICKS TO BOTTOM */}
             <Link
-                to={`/courses/${course.id}`}
+                to={`/courses/${course.id || course._id}`}
                 state={{ backgroundLocation: location }}
                 className="mt-auto font-medium inline-flex items-center gap-1
                    hover:gap-2 transition-all"

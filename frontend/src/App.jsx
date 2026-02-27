@@ -14,6 +14,7 @@ import MentorDashboard from "./pages/Dashboard/MentorDashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import DashboardHome from "./pages/Dashboard/DashboardHome";
 import DashboardLayout from "./layouts/DashboardLayout";
+import StudentDashboard from "./pages/Dashboard/StudentDashboard";
 
 export default function App() {
   const location = useLocation();
@@ -29,43 +30,47 @@ export default function App() {
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<DashboardHome />} />
-
-            <Route
-              path="mentor"
-              element={
-                <RoleGuard allowedRoles={['mentor', 'admin']}>
-                  <MentorDashboard />
-                </RoleGuard>
-              }
-            />
-
-            <Route
-              path="admin"
-              element={
-                <RoleGuard allowedRoles={['admin']}>
-                  <AdminDashboard />
-                </RoleGuard>
-              }
-            />
-
-          </Route>
-            <Route
-              path="/mentors" element={
-                <RoleGuard allowedRoles={['admin', 'mentor']}>
-                  <Mentors />
-                </RoleGuard>
-              } />
+          <Route path="/mentors" element={<Mentors />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+        </Route>
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardHome />} />
+
+          <Route
+            path="student"
+            element={
+              <RoleGuard allowedRoles={['user']}>
+                <StudentDashboard />
+              </RoleGuard>
+            }
+          />
+
+          <Route
+            path="mentor"
+            element={
+              <RoleGuard allowedRoles={['mentor', 'admin']}>
+                <MentorDashboard />
+              </RoleGuard>
+            }
+          />
+
+          <Route
+            path="admin"
+            element={
+              <RoleGuard allowedRoles={['admin']}>
+                <AdminDashboard />
+              </RoleGuard>
+            }
+          />
         </Route>
       </Routes>
 
