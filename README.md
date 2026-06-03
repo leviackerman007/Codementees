@@ -1,60 +1,77 @@
-# 🎓 CodeMentees - Modern Learning Platform
+# OnboardAI — AI-Powered Corporate Onboarding SaaS Platform
 
-## � **Documentation Index**
-
-**Start here based on your current task:**
-
-| Task | Document | Time |
-|------|----------|------|
-| 🚀 **Deploy to Production** | [DEPLOYMENT.md](./DEPLOYMENT.md) | 40 min |
-| 🧪 **Add Test Coverage** | [TESTING.md](./TESTING.md) | 4-6 hrs |
-| 📊 **Setup Monitoring** | [MONITORING.md](./MONITORING.md) | 2-3 hrs |
-| 📋 **Project Roadmap** | [PROJECT_ROADMAP.md](./PROJECT_ROADMAP.md) | Overview |
-| 🛠️ **Local Setup** | [INSTALLATION.md](./INSTALLATION.md) | 15 min |
-| ✨ **Features List** | [FEATURES.md](./FEATURES.md) | Reference |
+**OnboardAI** is a modern, enterprise-grade corporate onboarding SaaS platform designed to streamline new hire training, centralize company policies, and deliver instant, hallucination-free assistance using a database-backed Retrieval-Augmented Generation (RAG) pipeline.
 
 ---
 
-## ✅ **Status: Production-Ready**
+## 🚀 Key Features
 
-- ✅ **All 17 lint errors fixed** (ESLint: 0 errors)
-- ✅ **Production build passing** (847 modules, 0 warnings)
-- ✅ **All API contracts aligned**
-- ✅ **Authentication working**
-- ✅ **Role-based access control tested**
-- ✅ **Cloudinary integration ready**
-- ✅ **Deployment config created** (Vercel + Render)
-
-→ **Ready to deploy NOW in ~40 minutes** via [DEPLOYMENT.md](./DEPLOYMENT.md)
-
----
-
-## �📋 Industry-Standard Features Implemented
-
-### ✨ **Core Features**
-- 🎯 **Multi-Role Authentication**: Student, Mentor, Admin dashboards with JWT
-- 📚 **Dynamic Course Management**: Full CRUD with syllabus & content modules
-- 🤖 **AI Integration**: Google Gemini for course suggestions, chatbot assistant
-- ☁️ **Cloud Storage**: Cloudinary integration for image/video uploads
-- 🔔 **Real-time Notifications**: Custom toast notification system
-- 📊 **Analytics Dashboard**: User growth, enrollment stats, course performance
-- 🎨 **Modern UI/UX**: Dark mode, responsive design, gradient themes
-- 🔐 **Secure Backend**: Input validation, JWT auth, role-based access control
+*   **RAG AI Assistant**: Contextual chatbot powered by **Google Gemini 2.5 Flash** API, matching employee queries to uploaded corporate document indexes using MongoDB full-text search. Features prompt guardrails to restrict replies to company context and avoid hallucinations.
+*   **Structured Onboarding Paths**: Modular training roadmaps (e.g., *Engineering Team Boot Camp*, *HR & Benefits Hub*) with syllabus chapters, embedded video lessons (YouTube/Vimeo auto-embeds), text guides, and reference resource attachments.
+*   **Dynamic Progress Tracking**: Real-time progress bar calculation based on self-paced completion checkboxes, stored securely in client-side storage to minimize database query overhead.
+*   **Three Workspace Dashboards (RBAC)**:
+    *   **Employee Dashboard**: Enrolled paths list, learning pathways, and floating AI chat widget.
+    *   **Manager Dashboard**: Onboarding path builder, curriculum editors, and custom knowledge document indexer (.txt and .md upload support).
+    *   **Admin Dashboard**: Overview charts, pathway publishing approvals, and user management lists.
+*   **Modern Aesthetics**: Styled using **TailwindCSS v4** and **Framer Motion** animations. Full Light/Dark theme switching, responsive layouts, and scrollbar-hidden overlays.
+*   **Hardened REST APIs**: Secured with JWT verification, bcrypt password hashing, Joi validation schemas, Helmet headers, express-rate-limit throttling, and developer-friendly CORS policy.
 
 ---
 
-## 🚀 Quick Start
+## 📦 Technology Stack
 
-### **Prerequisites**
-- Node.js 18+ installed
-- MongoDB running locally or MongoDB Atlas account
-- Google Gemini API key (free) - Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
-- Cloudinary account (free) - Get from [Cloudinary](https://cloudinary.com)
+### **Frontend**
+*   **React 19** & **Vite 7**
+*   **React Router v7** (Nested routing, protective route gates)
+*   **TailwindCSS v4** (Utility styling, dark theme properties)
+*   **Framer Motion** (Smooth transitions and interactive micro-animations)
 
-### **1. Clone & Install**
+### **Backend**
+*   **Node.js** & **Express 4**
+*   **MongoDB Atlas** & **Mongoose 9** (M0 Free Cluster support)
+*   **jsonwebtoken** (HS256 JWT signing)
+*   **bcryptjs** (10 salt rounds encryption)
+*   **joi** (JSON schema validators)
+*   **express-fileupload** & **cloudinary** (Cloud media storage)
 
+---
+
+## 🔧 Environment Variables Setup
+
+Create a `.env` file inside the `backend/` directory based on the following keys:
+
+### **Backend (`backend/.env`)**
+```env
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Database Connection
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/onboardai?retryWrites=true&w=majority
+
+# Authentication Secrets
+JWT_SECRET=your_32_byte_secure_hex_key
+JWT_EXPIRES_IN=7d
+
+# Google Gemini API (Get from Google AI Studio)
+GEMINI_API_KEY=AIzaSy...
+
+# Cloudinary Integration (Optional)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# CORS Whitelist Configuration
+FRONTEND_URL=http://localhost:5173
+CORS_ORIGIN=http://localhost:5173
+```
+
+---
+
+## ⚙️ Quick Start
+
+### **1. Clone & Install Dependencies**
 ```bash
-# Clone repository
 git clone <your-repo-url>
 cd Codementees
 
@@ -67,301 +84,64 @@ cd ../frontend
 npm install
 ```
 
-### **2. Backend Setup**
-
+### **2. Seed the Database**
+Populate your MongoDB Atlas cluster with default users (Admin, Manager, Employee), onboarding paths, and knowledge base documents:
 ```bash
 cd backend
-
-# Copy environment template
-cp .env.example .env
-
-# Edit .env with your credentials:
-# - MONGODB_URI: Your MongoDB connection string
-# - JWT_SECRET: Random secure string
-# - GEMINI_API_KEY: From Google AI Studio
-# - CLOUDINARY_*: From Cloudinary dashboard
+npm run db:seed
 ```
 
-**Install required packages:**
-```bash
-npm install @google/generative-ai cloudinary express-fileupload
-```
+### **3. Start the Development Servers**
 
-### **3. Frontend Setup**
-
-```bash
-cd frontend
-
-# Install industry-standard packages
-npm install
-```
-
-### **4. Run Development Servers**
-
-**Terminal 1 - Backend:**
+**Terminal 1 (Backend):**
 ```bash
 cd backend
 npm run dev
-# Runs on http://localhost:5000
+# Starts on http://localhost:5000
 ```
 
-**Terminal 2 - Frontend:**
+**Terminal 2 (Frontend):**
 ```bash
 cd frontend
 npm run dev
-# Runs on http://localhost:5173
+# Starts on http://localhost:5173
 ```
 
 ---
 
-## 🔧 Environment Variables
+## 👥 Default Test Credentials
 
-### **Backend (.env)**
-```env
-# Server
-PORT=5000
-NODE_ENV=development
+You can log in to test different workspace roles using the following credentials:
 
-# Database
-MONGODB_URI=mongodb://localhost:27017/codementees
-# OR MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/codementees
-
-# Authentication
-JWT_SECRET=your_super_secret_key_min_32_characters_long
-JWT_EXPIRES_IN=7d
-
-# Google Gemini AI (FREE)
-# Get from: https://makersuite.google.com/app/apikey
-GEMINI_API_KEY=AIzaSy...
-
-# Cloudinary (FREE - 25GB)
-# Get from: https://cloudinary.com/console
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-# Frontend URL
-FRONTEND_URL=http://localhost:5173
-```
+| Role | Email | Password | Dashboard Features |
+|---|---|---|---|
+| **Admin** | `admin@onboardai.com` | `password123` | Analytics, publish paths, view all users |
+| **Manager** | `manager@onboardai.com` | `password123` | Create courses, edit syllabus, upload knowledge base docs |
+| **Employee** | `employee@onboardai.com` | `password123` | Study area, interactive checklist, RAG AI chatbot |
 
 ---
 
-## 📦 Technology Stack
-
-### **Frontend**
-| Technology | Purpose | Why Used |
-|-----------|---------|----------|
-| **React 18** | UI Framework | Component-based, virtual DOM, hooks |
-| **React Router v6** | SPA Routing | Modern routing with nested layouts |
-| **Tailwind CSS** | Styling | Utility-first, responsive, customizable |
-| **Vite** | Build Tool | Lightning-fast HMR, optimized builds |
-| **Context API** | State Management | Built-in, no extra library needed |
-
-### **Backend**
-| Technology | Purpose | Why Used |
-|-----------|---------|----------|
-| **Node.js** | Runtime | Event-driven, non-blocking I/O |
-| **Express.js** | Web Framework | Minimal, flexible, middleware support |
-| **MongoDB** | Database | NoSQL, flexible schema, scalable |
-| **Mongoose** | ODM | Schema validation, query building |
-| **JWT** | Authentication | Stateless, secure token-based auth |
-| **bcryptjs** | Password Hashing | Industry-standard encryption |
-
-### **Cloud & AI**
-| Service | Purpose | Free Tier |
-|---------|---------|-----------|
-| **Google Gemini** | AI Assistant | 1,500 requests/day |
-| **Cloudinary** | Media Storage | 25 GB storage + 25 GB bandwidth/month |
-| **MongoDB Atlas** | Cloud Database | 512 MB storage |
-
----
-
-## 🎯 AI Features Implemented
-
-### **1. AI Course Assistant Chatbot**
-- Powered by Google Gemini Pro
-- Context-aware responses
-- Helps students with course questions
-- Available on all dashboard pages
-
-### **2. Course Content Generation**
-- Auto-generate course descriptions
-- Create syllabus from topics
-- Improve existing content with AI
-
-### **3. Personalized Recommendations**
-- AI analyzes user's completed courses
-- Suggests next learning paths
-- Based on 2026 industry trends
-
----
-
-## 📊 Dashboard Features
-
-### **Admin Dashboard**
-- 📈 Analytics & Growth Charts
-- 👥 User Management (Students, Mentors)
-- 📚 Course Management (Create, Edit, Delete)
-- 📊 Enrollment Statistics
-- 🎨 Content Management with AI
-
-### **Mentor Dashboard**
-- 📚 Manage Assigned Courses
-- 👨‍🎓 View Student Enrollments
-- ✏️ Edit Course Content & Syllabus
-- 🤖 AI-Powered Content Suggestions
-
-### **Student Dashboard**
-- 📖 Browse & Enroll in Courses
-- 📈 Track Learning Progress
-- 🎓 View Enrolled Courses
-- 🤖 Get AI Learning Assistance
-
----
-
-## 🎨 UI/UX Highlights
-
-- ✅ **Dark Mode**: Full theme switching with CSS custom properties
-- ✅ **Responsive Design**: Mobile-first, works on all screen sizes
-- ✅ **Gradient Accents**: Modern visual appeal
-- ✅ **Toast Notifications**: User feedback for all actions
-- ✅ **Loading States**: Skeleton loaders, spinners
-- ✅ **Confirmation Modals**: Prevent accidental actions
-- ✅ **Smooth Animations**: Professional transitions
-
----
-
-## 🔐 Security Features
-
-- ✅ **JWT Authentication**: Secure, stateless sessions
-- ✅ **Password Hashing**: bcryptjs with salt rounds
-- ✅ **Role-Based Access Control**: Admin, Mentor, Student roles
-- ✅ **Input Validation**: Server-side + client-side
-- ✅ **CORS Protection**: Controlled origin access
-- ✅ **Security Headers**: XSS, CSRF, clickjacking protection
-- ✅ **Environment Variables**: Sensitive data never committed
-
----
-
-## 📁 Project Structure
+## 📁 Repository Directory Structure
 
 ```
 Codementees/
 ├── backend/
 │   ├── src/
-│   │   ├── controllers/     # Business logic
-│   │   │   ├── ai.controller.js       # AI features
-│   │   │   ├── auth.controller.js     # Authentication
-│   │   │   ├── course.controller.js   # Course CRUD
-│   │   │   └── upload.controller.js   # Cloudinary uploads
-│   │   ├── middleware/      # Auth, validation
-│   │   ├── models/          # MongoDB schemas
-│   │   ├── routes/          # API endpoints
-│   │   ├── utils/           # Helper functions
-│   │   ├── app.js           # Express app setup
-│   │   └── server.js        # Server entry point
-│   ├── .env.example         # Environment template
+│   │   ├── controllers/      # RAG Chat, Auth, Course CRUD handlers
+│   │   ├── middleware/       # JWT gate, validation schema wraps
+│   │   ├── models/           # User, Course, Knowledge schemas
+│   │   ├── routes/           # REST endpoints
+│   │   ├── utils/            # Seeding scripts, token tools
+│   │   └── validators/       # Joi schemas
 │   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   │   ├── AIAssistant.jsx        # AI chatbot
-│   │   │   ├── Toast.jsx              # Notifications
-│   │   │   ├── LoadingSpinner.jsx     # Loading states
-│   │   │   └── ConfirmModal.jsx       # Confirmation dialogs
-│   │   ├── context/         # Global state
-│   │   ├── layouts/         # Page layouts
-│   │   ├── pages/           # Route pages
-│   │   │   └── Dashboard/   # Dashboard pages
-│   │   │       ├── Analytics.jsx      # Admin analytics
-│   │   │       ├── AdminDashboard.jsx
-│   │   │       ├── MentorDashboard.jsx
-│   │   │       └── StudentDashboard.jsx
-│   │   ├── services/        # API calls
-│   │   │   ├── aiService.js           # AI endpoints
-│   │   │   ├── authService.js
-│   │   │   └── courseService.js
-│   │   ├── utils/           # Utilities
-│   │   │   ├── toast.js               # Toast manager
-│   │   │   └── cloudinary.js          # Upload helper
-│   │   ├── App.jsx          # Main app component
-│   │   └── index.css        # Global styles + theme
-│   └── package.json
-└── README.md
+└── frontend/
+    ├── src/
+    │   ├── components/       # AI Assistant widget, Modals, Cards
+    │   ├── context/          # Auth context, Theme toggles
+    │   ├── data/             # Static onboarding course fallbacks
+    │   ├── layouts/          # Dashboard & Main frames
+    │   ├── pages/            # Login, Signup, Study view, Contact
+    │   ├── services/         # Axios API connection modules
+    │   └── index.css         # Design tokens & no-scrollbar classes
+    └── package.json
 ```
-
----
-
-## 🚢 Deployment Guide
-
-### **Backend Deployment (Railway/Render)**
-
-1. **Create Account** on [Railway](https://railway.app) or [Render](https://render.com)
-2. **Connect GitHub Repository**
-3. **Set Environment Variables** (same as local .env)
-4. **Deploy** - Automatic builds on push
-
-### **Frontend Deployment (Vercel/Netlify)**
-
-1. **Create Account** on [Vercel](https://vercel.com) or [Netlify](https://netlify.com)
-2. **Import GitHub Repository**
-3. **Set Build Command**: `npm run build`
-4. **Set Output Directory**: `dist`
-5. **Add Environment Variable**: `VITE_API_URL=<your-backend-url>`
-6. **Deploy** - Automatic deployments on push
-
-### **Database (MongoDB Atlas)**
-
-1. **Create Free Cluster** at [MongoDB Atlas](https://mongodb.com/cloud/atlas)
-2. **Whitelist IPs**: Add `0.0.0.0/0` for development
-3. **Get Connection String**: Replace in `MONGODB_URI`
-
----
-
-## 🎓 For Your Resume
-
-### **Project Highlights**
-
-**Full-Stack Learning Management System** (Jan 2026 - Feb 2026)
-- Built scalable **MERN stack** application with role-based authentication serving 3 user types
-- Integrated **Google Gemini AI** for intelligent course recommendations and chatbot assistance
-- Implemented **Cloudinary CDN** for optimized media delivery with automatic compression
-- Developed **real-time analytics dashboard** tracking user growth and course engagement
-- Designed **responsive UI** with dark mode using Tailwind CSS and CSS custom properties
-- Architected **RESTful API** with JWT authentication and comprehensive error handling
-- Utilized **modern DevOps**: Git version control, environment management, cloud deployment
-
-### **Technical Skills Demonstrated**
-- **Frontend**: React 18, React Router, Context API, Tailwind CSS, Vite
-- **Backend**: Node.js, Express.js, MongoDB, Mongoose, JWT, bcryptjs
-- **AI/ML**: Google Gemini API integration, prompt engineering
-- **Cloud**: Cloudinary (media), MongoDB Atlas (database), deployment platforms
-- **Security**: JWT auth, RBAC, input validation, password hashing, CORS
-- **DevOps**: Environment config, API design, RESTful principles
-
----
-
-## 📝 License
-
-MIT License - Feel free to use for portfolio/learning
-
----
-
-## 🤝 Contributing
-
-This is a portfolio project. Feel free to fork and customize!
-
----
-
-## 📧 Contact
-
-**Your Name**  
-📧 your.email@example.com  
-🔗 [LinkedIn](https://linkedin.com/in/yourprofile)  
-🐙 [GitHub](https://github.com/yourusername)
-
----
-
-**Built with ❤️ using modern web technologies**
