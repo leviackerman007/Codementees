@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
 
 if (!MONGO_URI) {
-    console.error('ERROR: MONGO_URI environment variable is not set');
+    console.error('ERROR: Set MONGO_URI (preferred) or MONGODB_URI environment variable');
     process.exit(1);
 }
 

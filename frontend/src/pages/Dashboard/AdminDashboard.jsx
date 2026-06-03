@@ -74,17 +74,17 @@ export default function AdminDashboard() {
             {/* STATS */}
             <div className="dash-grid dash-grid-3 stagger">
                 <div className="stat-card">
-                    <p className="text-sm text-muted">Total Users</p>
+                    <p className="text-sm text-muted">Total Employees</p>
                     <p className="stat-number">{stats?.totalUsers ?? 0}</p>
                     <span className="badge-soft">Active</span>
                 </div>
                 <div className="stat-card">
-                    <p className="text-sm text-muted">Mentors</p>
+                    <p className="text-sm text-muted">Managers</p>
                     <p className="stat-number">{stats?.totalMentors ?? 0}</p>
                     <span className="badge-soft">Verified</span>
                 </div>
                 <div className="stat-card">
-                    <p className="text-sm text-muted">Courses</p>
+                    <p className="text-sm text-muted">Onboarding Paths</p>
                     <p className="stat-number">{stats?.totalCourses ?? 0}</p>
                     <p className="text-xs text-muted">Published: {stats?.publishedCourses ?? 0}</p>
                 </div>
@@ -133,12 +133,12 @@ export default function AdminDashboard() {
             {/* COURSES */}
             <div className="panel">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold">Recent Courses</h2>
+                    <h2 className="text-lg font-semibold">Recent Onboarding Paths</h2>
                     <span className="text-xs text-muted">Latest 8</span>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                     {courses.length === 0 ? (
-                        <p className="text-muted">No courses available.</p>
+                        <p className="text-muted">No onboarding paths available.</p>
                     ) : (
                         courses.map((course) => (
                             <div key={course._id} className="dash-card flex flex-col gap-3">

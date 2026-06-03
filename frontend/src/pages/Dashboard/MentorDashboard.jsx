@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import {
   createCourse,
   getMyCourses,
-  toggleCoursePublish,
   deleteCourse
 } from "../../services/courseService";
 import EditCourseModal from "../../components/EditCourseModal";
@@ -40,14 +39,6 @@ export default function MentorDashboard() {
     }
   };
 
-  const togglePublish = async (id) => {
-    try {
-      await toggleCoursePublish(id);
-      fetchCourses();
-    } catch (err) {
-      setError(err.message || "Only admins can publish courses");
-    }
-  };
   const handleDeleteCourse = async (id) => {
     try {
       await deleteCourse(id);
@@ -119,8 +110,8 @@ export default function MentorDashboard() {
       {/* CREATE FORM */}
       <div className="panel">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-semibold">Create New Course</h1>
-          <span className="badge-soft">Mentor Tools</span>
+          <h1 className="text-2xl font-semibold">Create Onboarding Path</h1>
+          <span className="badge-soft">Manager Tools</span>
         </div>
 
         {error && (
@@ -132,7 +123,7 @@ export default function MentorDashboard() {
         <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
           <input
             name="title"
-            placeholder="Course Title"
+            placeholder="Path Title"
             className="input"
             value={form.title}
             onChange={handleChange}
@@ -141,7 +132,7 @@ export default function MentorDashboard() {
 
           <textarea
             name="description"
-            placeholder="Course Description"
+            placeholder="Path Description"
             className="input md:col-span-2"
             value={form.description}
             onChange={handleChange}
@@ -202,7 +193,7 @@ export default function MentorDashboard() {
 
           <div className="md:col-span-2 flex justify-end">
             <button type="submit" className="dash-btn">
-              Create Course
+              Create Path
             </button>
           </div>
         </form>
@@ -211,14 +202,14 @@ export default function MentorDashboard() {
       {/* MY COURSES */}
       <div className="panel">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold">My Courses</h2>
-          <span className="text-xs text-muted">💡 Admin publishes courses</span>
+          <h2 className="text-xl font-semibold">My Onboarding Paths</h2>
+          <span className="text-xs text-muted">💡 Admin publishes paths</span>
         </div>
 
         {coursesLoading ? (
-          <div className="py-8 text-sm text-muted">Loading courses...</div>
+          <div className="py-8 text-sm text-muted">Loading onboarding paths...</div>
         ) : courses.length === 0 ? (
-          <p>No courses created yet.</p>
+          <p>No onboarding paths created yet.</p>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {courses.map((course) => (

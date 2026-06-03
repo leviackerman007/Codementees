@@ -14,14 +14,14 @@ export default function HeroSection() {
                         transition={{ duration: 0.5, ease: "easeOut" }}
                         className="max-w-6xl mx-auto px-6 py-24 pb-20 text-center">
                         <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-                            Learn Industry Ready Skills
+                            Streamline Employee Onboarding
                             <br className='hidden md:block' />
-                            with Expert Mentorship
+                            with RAG AI Assistance
                         </h1>
 
                         <p className="max-w-2xl mx-auto mb-8">
-                            Structured programs, real-world projects, and guidance from
-                            professionals to help you become job-ready.
+                            Interactive onboarding pathways, company knowledge bases, and smart LLM-powered
+                            chatbot support to ramp up new hires in days, not weeks.
                         </p>
 
 
@@ -29,11 +29,13 @@ export default function HeroSection() {
                             <Link 
                             to="/courses"
                             className="btn btn-primary">
-                                Explore Programs
+                                Explore Paths
                             </Link>
-                            <button className="btn btn-secondary">
-                                Talk to Mentor
-                            </button>
+                            <Link 
+                            to="/dashboard"
+                            className="btn btn-secondary">
+                                Go to Workspace
+                            </Link>
                         </div>
                     </motion.div>
 

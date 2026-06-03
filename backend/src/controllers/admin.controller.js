@@ -109,3 +109,22 @@ export const getAllCourses = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getRecentEnrollments = async (req, res, next) => {
+    try {
+        const { limit = 20 } = req.query;
+
+        const enrollments = await Enrollment.find()
+            .populate('user', 'name email role createdAt')
+            .populate('course', 'title createdAt')
+            .sort({ createdAt: -1 })
+            .limit(parseInt(limit, 10));
+
+        res.json({
+            success: true,
+            enrollments,
+        });
+    } catch (error) {
+        next(error);
+    }
+};

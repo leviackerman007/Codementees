@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import * as authService from "../services/authService";
 
 const AuthContext = createContext();
@@ -31,41 +31,33 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const signup = async(data)=>{
-        try{
-            const response = await authService.signupUser(data);
-            setUser(response.user);
-            setToken(response.token);
-            localStorage.setItem('token', response.token);
-            localStorage.setItem("user", JSON.stringify(response.user));
-            return response;
-        }catch(error){
-            throw error;
-        }
+        const response = await authService.signupUser(data);
+        setUser(response.user);
+        setToken(response.token);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        return response;
     }
 
     const login = async(emailOrData, password) => {
-        try{
-            let response;
-            
-            // If called from components after auth service response
-            if (typeof emailOrData === 'object' && password) {
-                response = {
-                    user: emailOrData,
-                    token: password
-                };
-            } else {
-                // If called with email and password for direct login
-                response = await authService.loginUser({email: emailOrData, password});
-            }
-            
-            setUser(response.user);
-            setToken(response.token);
-            localStorage.setItem('token', response.token);
-            localStorage.setItem("user", JSON.stringify(response.user));
-            return response;
-        }catch(error){
-            throw error;
+        let response;
+        
+        // If called from components after auth service response
+        if (typeof emailOrData === 'object' && password) {
+            response = {
+                user: emailOrData,
+                token: password
+            };
+        } else {
+            // If called with email and password for direct login
+            response = await authService.loginUser({email: emailOrData, password});
         }
+        
+        setUser(response.user);
+        setToken(response.token);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        return response;
     };
 
     const logout = () => {
@@ -91,10 +83,4 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export const useAuth=()=>{
-    const context = useContext(AuthContext);
-    if(context === undefined){
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
-}
+export { AuthContext };

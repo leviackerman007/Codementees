@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signupUser } from "../services/authService.js";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -37,7 +37,7 @@ export default function Signup() {
 
       if (data?.token) {
         login(data.user, data.token);
-        navigate("/");
+        navigate("/dashboard");
       } else {
         setError(data?.message || "Signup failed");
       }

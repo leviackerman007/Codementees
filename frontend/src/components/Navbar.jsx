@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "../context/ThemeContext";
-import { useAuth } from "../context/AuthContext";
+import { AnimatePresence, motion } from "framer-motion";
+import { useTheme } from "../hooks/useTheme";
+import { useAuth } from "../hooks/useAuth";
 import ProfileDropdown from "./ProfileDropdown";
 
 /* Animated Burger / Close Icon */
@@ -33,14 +33,14 @@ export default function Navbar() {
       <nav className="sticky top-0 z-50 surface border-b border-default">
         <div className="flex justify-between items-center px-6 md:px-10 py-4">
           {/* Logo */}
-          <Link to="/" className="text-xl font-bold">
-            Codementees
+          <Link to="/" className="text-xl font-bold bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text text-transparent">
+            OnboardAI
           </Link>
 
           {/* Desktop Links */}
           <div className="hidden md:flex gap-6 font-medium text-secondary">
-            <Link className="hover:text-primary" to="/courses">Programs</Link>
-            <Link className="hover:text-primary" to="/mentors">Mentors</Link>
+            <Link className="hover:text-primary" to="/courses">Onboarding Paths</Link>
+            <Link className="hover:text-primary" to="/mentors">Managers</Link>
             <Link className="hover:text-primary" to="/about">About</Link>
             <Link className="hover:text-primary" to="/contact">Contact</Link>
           </div>
@@ -151,8 +151,8 @@ export default function Navbar() {
                     )}
                   </>
                 )}
-                <Link onClick={() => setIsOpen(false)} to="/courses">Programs</Link>
-                <Link onClick={() => setIsOpen(false)} to="/mentors">Mentors</Link>
+                <Link onClick={() => setIsOpen(false)} to="/courses">Onboarding Paths</Link>
+                <Link onClick={() => setIsOpen(false)} to="/mentors">Managers</Link>
                 <Link onClick={() => setIsOpen(false)} to="/about">About</Link>
                 <Link onClick={() => setIsOpen(false)} to="/contact">Contact</Link>
 

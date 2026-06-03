@@ -1,16 +1,26 @@
-import {useAuth} from "../../context/AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
-export default function DashboardHome(){
-    const {user}=useAuth();
+export default function DashboardHome() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-    return (
-        <div>
-            <h1 className="text-2xl font-semibold mb-4">
-                Welcome back, {user?.name}
-            </h1>
-            <p className="text-muted">
-                This is your dashboard overview.
-            </p>
-        </div>
-    );
+  useEffect(() => {
+    if (user) {
+      if (user.role === "user") {
+        navigate("/dashboard/student", { replace: true });
+      } else if (user.role === "mentor") {
+        navigate("/dashboard/mentor", { replace: true });
+      } else if (user.role === "admin") {
+        navigate("/dashboard/admin", { replace: true });
+      }
+    }
+  }, [user, navigate]);
+
+  return (
+    <div className="flex items-center justify-center py-12">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600" />
+    </div>
+  );
 }

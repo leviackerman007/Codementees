@@ -1,21 +1,65 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fileUpload from 'express-fileupload';
 import authRoutes from './routes/auth.routes.js';
 import courseRoutes from './routes/course.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
+import knowledgeRoutes from './routes/knowledge.routes.js';
+import aiRoutes from './routes/ai.routes.js';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
 const app = express();
+app.set('trust proxy',1);
+app.use(helmet({
+    crossOriginResourcePolicy:{policy:'cross-origin'}
+}));
+
+const globalLimiter=rateLimit({
+    windowMs: 15*60*1000,
+    max:300,
+    standardHeaders:true,
+    legacyHeaders:false,
+    message:{
+        success:false,
+        message:'Too many requests, please try again later.'
+    }
+});
+
+app.use(globalLimiter);
+
+const authLimiter=rateLimit({
+    windowMs: 15*60*1000,
+    max:20,
+    standardHeaders:true,
+    legacyHeaders:false,
+    message:{
+        success:false,
+        message:'Too many auth attempts, please try again later.'
+    }
+});
 
 // ============================================
 // MIDDLEWARE SETUP
 // ============================================
-
 // CORS Configuration
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173')
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean);
+
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+            return callback(null, true);
+        }
+        console.warn(`[CORS Blocked] Origin: ${origin} not in allowed origins:`, allowedOrigins);
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
 }));
 
@@ -23,14 +67,13 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// Security Headers
-app.use((req, res, next) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-    next();
-});
+// File Upload Handler
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+}));
+
 
 // Request Logger Middleware
 app.use((req, res, next) => {
@@ -42,9 +85,12 @@ app.use((req, res, next) => {
 // API ROUTES
 // ============================================
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/knowledge', knowledgeRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {

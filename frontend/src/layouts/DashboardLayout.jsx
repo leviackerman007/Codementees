@@ -1,7 +1,8 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
+import AIAssistant from '../components/AIAssistant';
 
 export default function DashboardLayout() {
     const { user, logout } = useAuth();
@@ -66,7 +67,7 @@ export default function DashboardLayout() {
                             to="/dashboard/student"
                             className={linkStyle('/dashboard/student')}
                         >
-                            {sidebarOpen ? 'My Learning' : 'ML'}
+                            {sidebarOpen ? 'My Training' : 'MT'}
                         </Link>
                     )}
 
@@ -76,18 +77,36 @@ export default function DashboardLayout() {
                             to="/dashboard/mentor"
                             className={linkStyle('/dashboard/mentor')}
                         >
-                            {sidebarOpen ? 'My Courses' : 'MC'}
+                            {sidebarOpen ? 'Manage Paths' : 'MP'}
+                        </Link>
+                    )}
+
+                    {/* ADMIN or MENTOR - Knowledge Base Access */}
+                    {(user?.role === 'mentor' || user?.role === 'admin') && (
+                        <Link
+                            to="/dashboard/knowledge"
+                            className={linkStyle('/dashboard/knowledge')}
+                        >
+                            {sidebarOpen ? 'Knowledge Base' : 'KB'}
                         </Link>
                     )}
 
                     {/* ADMIN ONLY - Admin role */}
                     {user?.role === 'admin' && (
-                        <Link
-                            to="/dashboard/admin"
-                            className={linkStyle('/dashboard/admin')}
-                        >
-                            {sidebarOpen ? 'Admin Panel' : 'AD'}
-                        </Link>
+                        <>
+                            <Link
+                                to="/dashboard/admin"
+                                className={linkStyle('/dashboard/admin')}
+                            >
+                                {sidebarOpen ? 'Operations Hub' : 'OH'}
+                            </Link>
+                            <Link
+                                to="/dashboard/analytics"
+                                className={linkStyle('/dashboard/analytics')}
+                            >
+                                {sidebarOpen ? 'Analytics' : 'AN'}
+                            </Link>
+                        </>
                     )}
                 </nav>
 
@@ -119,28 +138,46 @@ export default function DashboardLayout() {
                             onClick={() => setMobileMenuOpen(false)}
                             className={linkStyle('/dashboard/student')}
                         >
-                            My Learning
+                            My Training
                         </Link>
                     )}
 
                     {(user?.role === 'mentor' || user?.role === 'admin') && (
-                        <Link
-                            to="/dashboard/mentor"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={linkStyle('/dashboard/mentor')}
-                        >
-                            My Courses
-                        </Link>
+                        <>
+                            <Link
+                                to="/dashboard/mentor"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={linkStyle('/dashboard/mentor')}
+                            >
+                                Manage Paths
+                            </Link>
+                            <Link
+                                to="/dashboard/knowledge"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={linkStyle('/dashboard/knowledge')}
+                            >
+                                Knowledge Base
+                            </Link>
+                        </>
                     )}
 
                     {user?.role === 'admin' && (
-                        <Link
-                            to="/dashboard/admin"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={linkStyle('/dashboard/admin')}
-                        >
-                            Admin Panel
-                        </Link>
+                        <>
+                            <Link
+                                to="/dashboard/admin"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={linkStyle('/dashboard/admin')}
+                            >
+                                Operations Hub
+                            </Link>
+                            <Link
+                                to="/dashboard/analytics"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={linkStyle('/dashboard/analytics')}
+                            >
+                                Analytics
+                            </Link>
+                        </>
                     )}
 
                     <div className="pt-4 mt-4 border-t border-default">
@@ -194,6 +231,7 @@ export default function DashboardLayout() {
                 <main className="dashboard-main flex-1 overflow-auto pb-8">
                     <Outlet />
                 </main>
+                <AIAssistant />
             </div>
         </div>
     );

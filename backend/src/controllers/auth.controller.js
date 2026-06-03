@@ -2,32 +2,9 @@ import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/generateToken.js';
 
-const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-}
-
-const validatePassword = (password) => password?.length >= 6;
-
 export const signup = async (req, res, next) => {
     try {
         const { name, email, password, confirmPassword, role } = req.body;
-
-        if (!name?.trim() || !email?.trim() || !password?.trim()) {
-            return res.status(400).json({ success: false, message: 'Name, email, and password are required' });
-        }
-
-        if (!validateEmail(email)) {
-            return res.status(400).json({ success: false, message: 'Invalid email format' });
-        }
-
-        if (!validatePassword(password)) {
-            return res.status(400).json({ success: false, message: "Password must be at least 6 characters" })
-        }
-
-        if (password !== confirmPassword) {
-            return res.status(400).json({ success: false, message: "Passwords do not match" })
-        }
 
         const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
@@ -65,14 +42,6 @@ export const signup = async (req, res, next) => {
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-
-        if (!email?.trim() || !password?.trim()) {
-            return res.status(400).json({ success: false, message: 'All fields required' });
-        }
-
-        if (!validateEmail(email)) {
-            return res.status(400).json({ success: false, message: 'Invalid email format' });
-        }
 
         const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
         if (!user) {
