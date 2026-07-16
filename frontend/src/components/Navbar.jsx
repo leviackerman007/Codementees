@@ -40,7 +40,7 @@ export default function Navbar() {
           {/* Desktop Links */}
           <div className="hidden md:flex gap-6 font-medium text-secondary">
             <Link className="hover:text-primary" to="/courses">Onboarding Paths</Link>
-            <Link className="hover:text-primary" to="/mentors">Managers</Link>
+
             <Link className="hover:text-primary" to="/about">About</Link>
             <Link className="hover:text-primary" to="/contact">Contact</Link>
           </div>
@@ -152,7 +152,7 @@ export default function Navbar() {
                   </>
                 )}
                 <Link onClick={() => setIsOpen(false)} to="/courses">Onboarding Paths</Link>
-                <Link onClick={() => setIsOpen(false)} to="/mentors">Managers</Link>
+
                 <Link onClick={() => setIsOpen(false)} to="/about">About</Link>
                 <Link onClick={() => setIsOpen(false)} to="/contact">Contact</Link>
 

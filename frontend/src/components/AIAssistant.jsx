@@ -39,8 +39,9 @@ export default function AIAssistant() {
     {
       id: "greeting",
       sender: "ai",
-      text: `Hi ${user?.name || "there"}! I'm **OnboardAI**, your onboarding assistant. Ask me anything about our company guidelines, technical setup, or benefits policies!`,
+      text: `Hi ${user?.name || "there"}! I'm **OnboardAI**, your agentic onboarding assistant. Ask me anything about company policies, your training checklist, or who your manager is!`,
       createdAt: new Date(),
+      toolsUsed: [],
     },
   ]);
   const [input, setInput] = useState("");
@@ -85,6 +86,7 @@ export default function AIAssistant() {
         sender: "ai",
         text: res.reply || "I didn't receive a response. Please try again.",
         createdAt: new Date(),
+        toolsUsed: res.toolsUsed || [],
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -106,8 +108,9 @@ export default function AIAssistant() {
       {
         id: "greeting",
         sender: "ai",
-        text: `Welcome back. Ask me anything about our corporate onboarding paths and wikis!`,
+        text: `Welcome back! Ask me anything — I can look up policies, your training checklist, or available courses.`,
         createdAt: new Date(),
+        toolsUsed: [],
       },
     ]);
   };
@@ -126,13 +129,13 @@ export default function AIAssistant() {
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">
                 🤖
               </div>
-              <div>
-                <h3 className="font-bold text-sm leading-tight">OnboardAI Assistant</h3>
-                <span className="text-[10px] text-teal-200 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-teal-300 animate-pulse"></span>
-                  Online - RAG Mode
-                </span>
-              </div>
+                <div>
+                  <h3 className="font-bold text-sm leading-tight">OnboardAI Assistant</h3>
+                  <span className="text-[10px] text-teal-200 font-semibold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-300 animate-pulse"></span>
+                    Agent Mode
+                  </span>
+                </div>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -174,6 +177,18 @@ export default function AIAssistant() {
                   }`}
                   dangerouslySetInnerHTML={{ __html: formatMessage(msg.text) }}
                 />
+                {msg.sender === "ai" && msg.toolsUsed && msg.toolsUsed.length > 0 && (
+                  <div className="mt-1 flex flex-wrap gap-1">
+                    {msg.toolsUsed.map((tool) => (
+                      <span
+                        key={tool}
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-700 font-mono"
+                      >
+                        🔧 {tool}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
@@ -184,7 +199,7 @@ export default function AIAssistant() {
                 </div>
                 <div className="bg-surface border border-default text-muted rounded-xl px-3 py-2 text-sm rounded-tl-none shadow-sm flex items-center gap-1.5">
                   <LoadingSpinner size="sm" className="text-teal-600" />
-                  <span>Thinking...</span>
+                  <span>Agent thinking...</span>
                 </div>
               </div>
             )}

@@ -32,3 +32,31 @@ export const getAdminCourses = async (page = 1, limit = 10, search = '') => {
         throw new Error(error.response?.data?.message || 'Failed to fetch courses');
     }
 };
+
+export const assignCourse = async (userId, courseId, dueDate) => {
+    try {
+        const res = await api.post('/admin/assign', { userId, courseId, dueDate: dueDate || null });
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to assign course');
+    }
+};
+
+export const getSystemPrompt = async () => {
+    try {
+        const res = await api.get('/admin/prompt');
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to fetch AI system prompt');
+    }
+};
+
+export const updateSystemPrompt = async (aiSystemPrompt) => {
+    try {
+        const res = await api.post('/admin/prompt', { aiSystemPrompt });
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to update AI system prompt');
+    }
+};
+

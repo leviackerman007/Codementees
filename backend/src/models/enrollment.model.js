@@ -22,6 +22,14 @@ const enrollmentSchema = new mongoose.Schema(
             enum:["pending","completed"],
             default:"pending",
         },
+        dueDate: {
+            type: Date,
+            default: null,
+        },
+        assignedByAdmin: {
+            type: Boolean,
+            default: false,
+        },
     },
     {timestamps:true}
 );

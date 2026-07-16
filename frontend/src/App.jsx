@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleGuard from "./routes/RoleGuard";
-import Mentors from "./pages/Mentors";
+
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MentorDashboard from "./pages/Dashboard/MentorDashboard";
@@ -102,10 +102,7 @@ export default function App() {
             />
 
           </Route>
-          <Route
-            path="/mentors" element={
-              <Mentors />
-            } />
+
 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

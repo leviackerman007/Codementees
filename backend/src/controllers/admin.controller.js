@@ -1,6 +1,7 @@
 import Course from '../models/course.model.js';
 import User from '../models/user.model.js';
 import Enrollment from '../models/enrollment.model.js';
+import Settings from '../models/settings.model.js';
 
 export const getAdminStats = async (req, res, next) => {
     try {
@@ -124,6 +125,71 @@ export const getRecentEnrollments = async (req, res, next) => {
             success: true,
             enrollments,
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const assignCourse = async (req, res, next) => {
+    try {
+        const { userId, courseId, dueDate } = req.body;
+
+        if (!userId || !courseId) {
+            return res.status(400).json({ success: false, message: 'userId and courseId are required.' });
+        }
+
+        const [user, course] = await Promise.all([
+            User.findById(userId),
+            Course.findById(courseId),
+        ]);
+
+        if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+        if (!course) return res.status(404).json({ success: false, message: 'Course not found.' });
+
+        // Prevent duplicate enrollment
+        const existing = await Enrollment.findOne({ user: userId, course: courseId });
+        if (existing) {
+            return res.status(409).json({ success: false, message: 'User is already enrolled in this course.' });
+        }
+
+        const enrollment = await Enrollment.create({
+            user: userId,
+            course: courseId,
+            dueDate: dueDate || null,
+            assignedByAdmin: true,
+            paymentStatus: 'completed',
+        });
+
+        res.status(201).json({ success: true, message: 'Course assigned successfully.', enrollment });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getSystemPrompt = async (req, res, next) => {
+    try {
+        const settings = await Settings.findOne({ key: 'global' });
+        const prompt = settings?.aiSystemPrompt || '';
+        res.json({ success: true, aiSystemPrompt: prompt });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updateSystemPrompt = async (req, res, next) => {
+    try {
+        const { aiSystemPrompt } = req.body;
+        if (typeof aiSystemPrompt !== 'string') {
+            return res.status(400).json({ success: false, message: 'aiSystemPrompt must be a string.' });
+        }
+
+        const settings = await Settings.findOneAndUpdate(
+            { key: 'global' },
+            { aiSystemPrompt, lastUpdatedBy: req.user._id },
+            { upsert: true, new: true, runValidators: true }
+        );
+
+        res.json({ success: true, message: 'AI system prompt updated.', aiSystemPrompt: settings.aiSystemPrompt });
     } catch (error) {
         next(error);
     }

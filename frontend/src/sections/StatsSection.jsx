@@ -9,8 +9,8 @@ import {
 export default function StatsSection() {
   const features = [
     {
-      title: "Superb mentors",
-      desc: "Best in class mentors from top tech schools and industry favourite companies guide you personally.",
+      title: "Expert Onboarding Managers",
+      desc: "Experienced managers to guide you through your personalized onboarding paths.",
       icon: UserGroupIcon,
     },
     {
@@ -49,14 +49,13 @@ export default function StatsSection() {
           className="mb-14"
         >
           <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-            Why CodeMentees?
+            Why OnboardAI?
           </h2>
 
           <p className="max-w-3xl leading-relaxed text-slate-700 dark:text-slate-300">
-            Our platform is designed to help you master coding with expert-led mentorship,
-            practical courses, and real-world projects. Whether you're a beginner or an
-            experienced developer, we provide the guidance and support to accelerate your
-            career growth.
+            Our platform is designed to help your team onboard efficiently with expert-led guidance,
+            practical courses, and real-world company policies. Whether you're a new hire or an
+            experienced transfer, we provide the tools to accelerate your ramp-up time.
           </p>
         </motion.div>
 

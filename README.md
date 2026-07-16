@@ -4,6 +4,18 @@
 
 ---
 
+## 👥 Demo Login Credentials (For Recruiters)
+
+To quickly test the platform without signing up, use these seeded credentials:
+
+| Role | Email | Password | Dashboard Features |
+|---|---|---|---|
+| **Admin** | `admin@onboardai.com` | `password123` | Analytics, approve/publish paths, view users |
+| **Manager** | `manager@onboardai.com` | `password123` | Build onboarding paths, upload knowledge docs |
+| **Employee** | `employee@onboardai.com` | `password123` | Study area, progress checklist, AI chatbot |
+
+---
+
 ## 🚀 Key Features
 
 *   **RAG AI Assistant**: Contextual chatbot powered by **Google Gemini 2.5 Flash** API, matching employee queries to uploaded corporate document indexes using MongoDB full-text search. Features prompt guardrails to restrict replies to company context and avoid hallucinations.
@@ -107,17 +119,7 @@ npm run dev
 # Starts on http://localhost:5173
 ```
 
----
 
-## 👥 Default Test Credentials
-
-You can log in to test different workspace roles using the following credentials:
-
-| Role | Email | Password | Dashboard Features |
-|---|---|---|---|
-| **Admin** | `admin@onboardai.com` | `password123` | Analytics, publish paths, view all users |
-| **Manager** | `manager@onboardai.com` | `password123` | Create courses, edit syllabus, upload knowledge base docs |
-| **Employee** | `employee@onboardai.com` | `password123` | Study area, interactive checklist, RAG AI chatbot |
 
 ---
 

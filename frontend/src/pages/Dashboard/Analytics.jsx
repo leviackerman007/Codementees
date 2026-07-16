@@ -185,7 +185,34 @@ export default function Analytics() {
 
       {/* Recent Enrollments */}
       <div className="dash-card">
-        <h3 className="text-xl font-bold mb-4 text-dash-ink dark:text-white">🔔 Recent Enrollments</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-dash-ink dark:text-white">🔔 Recent Enrollments</h3>
+          <button
+            onClick={() => {
+              const rows = [
+                ["Employee", "Course", "Date", "Status", "Due Date"],
+                ...stats.recentEnrollments.map((e) => [
+                  e.user?.name || "Unknown",
+                  e.course?.title || "Unknown",
+                  new Date(e.createdAt).toLocaleDateString(),
+                  "Active",
+                  e.dueDate ? new Date(e.dueDate).toLocaleDateString() : "None",
+                ]),
+              ];
+              const csv = rows.map((r) => r.map((v) => `"${v}"`).join(",")).join("\n");
+              const blob = new Blob([csv], { type: "text/csv" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "onboarding_report.csv";
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-teal-600 hover:bg-teal-700 text-white transition"
+          >
+            ⬇ Download CSV
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>

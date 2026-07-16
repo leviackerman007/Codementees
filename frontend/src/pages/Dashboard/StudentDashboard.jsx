@@ -150,6 +150,24 @@ export default function StudentDashboard() {
                       Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
                     </p>
 
+                    {enrollment.dueDate && (
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                          new Date(enrollment.dueDate) < new Date()
+                            ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                            : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                        }`}>
+                          {new Date(enrollment.dueDate) < new Date() ? "⚠️ Overdue:" : "📅 Due:"} {new Date(enrollment.dueDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+
+                    {enrollment.assignedByAdmin && (
+                      <span className="text-xs text-teal-600 dark:text-teal-400 font-medium">
+                        ✓ Assigned by HR
+                      </span>
+                    )}
+
                     <div>
                       <div className="flex justify-between text-xs text-muted mb-1">
                         <span>Progress</span>
