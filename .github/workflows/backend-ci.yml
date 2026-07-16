@@ -52,5 +52,10 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     steps:
       - name: Trigger Render Deploy Hook
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_URL != '' }}
         run: |
           curl -f "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      - name: Skip deploy (no Render hook configured)
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_URL == '' }}
+        run: echo "ℹ️ RENDER_DEPLOY_HOOK_URL not set — skipping deploy. Add it in GitHub Secrets when ready."
