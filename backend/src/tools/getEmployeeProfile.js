@@ -1,12 +1,5 @@
 import User from "../models/user.model.js";
 
-/**
- * Tool: getEmployeeProfile
- * Returns basic profile information for the authenticated user.
- *
- * @param {Object} context - { userId: string }
- * @returns {{ name, email, role, joinedDate }}
- */
 export async function getEmployeeProfile({ userId }) {
   try {
     const user = await User.findById(userId).select("name email role createdAt").lean();
@@ -24,7 +17,6 @@ export async function getEmployeeProfile({ userId }) {
   }
 }
 
-// Gemini Function Declaration for this tool
 export const getEmployeeProfileDeclaration = {
   name: "getEmployeeProfile",
   description:

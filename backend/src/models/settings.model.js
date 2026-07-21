@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const settingsSchema = new mongoose.Schema(
   {
-    // Singleton identifier — always query with { key: "global" }
+    // Always query with { key: "global" } — there's only one settings document
     key: {
       type: String,
       default: "global",

@@ -1,15 +1,7 @@
 import Enrollment from "../models/enrollment.model.js";
 
-/**
- * Tool: getChecklist
- * Returns the user's enrollment status and onboarding progress summary.
- * 
- * Progress percentages are not tracked server-side (stored in localStorage),
- * so this tool returns enrollment metadata and the admin-assigned due dates.
- *
- * @param {Object} context - { userId: string }
- * @returns {{ enrolledCount, courses: Array<{ title, enrolledAt, dueDate, assignedByAdmin }> }}
- */
+// Progress % is stored in localStorage on the client, so we only return
+// enrollment metadata and due dates from the server side.
 export async function getChecklist({ userId }) {
   try {
     const enrollments = await Enrollment.find({ user: userId })
@@ -28,19 +20,13 @@ export async function getChecklist({ userId }) {
       title: e.course?.title || "Unknown Course",
       description: e.course?.description || "",
       duration: e.course?.duration || "",
-      enrolledAt: e.enrolledAt
-        ? new Date(e.enrolledAt).toLocaleDateString()
-        : "Unknown",
-      dueDate: e.dueDate
-        ? new Date(e.dueDate).toLocaleDateString()
-        : null,
+      enrolledAt: e.enrolledAt ? new Date(e.enrolledAt).toLocaleDateString() : "Unknown",
+      dueDate: e.dueDate ? new Date(e.dueDate).toLocaleDateString() : null,
       assignedByAdmin: e.assignedByAdmin || false,
     }));
 
     const withDueDate = courses.filter((c) => c.dueDate);
-    const overdue = courses.filter(
-      (c) => c.dueDate && new Date(c.dueDate) < new Date()
-    );
+    const overdue = courses.filter((c) => c.dueDate && new Date(c.dueDate) < new Date());
 
     return {
       enrolledCount: courses.length,
@@ -54,7 +40,6 @@ export async function getChecklist({ userId }) {
   }
 }
 
-// Gemini Function Declaration for this tool
 export const getChecklistDeclaration = {
   name: "getChecklist",
   description:

@@ -19,11 +19,12 @@ const messageSchema = new mongoose.Schema({
 
 const conversationMemorySchema = new mongoose.Schema(
   {
+    // One document per user
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true, // one memory document per user
+      unique: true,
     },
     messages: {
       type: [messageSchema],

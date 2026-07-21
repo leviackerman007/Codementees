@@ -1,11 +1,5 @@
 import Course from "../models/course.model.js";
 
-/**
- * Tool: getTrainingModules
- * Returns a summary list of all published onboarding training modules/paths.
- *
- * @returns {Array<{ title, description, duration, level, syllabusCount, contentCount }>}
- */
 export async function getTrainingModules() {
   try {
     const courses = await Course.find({ isPublished: true })
@@ -34,7 +28,6 @@ export async function getTrainingModules() {
   }
 }
 
-// Gemini Function Declaration for this tool
 export const getTrainingModulesDeclaration = {
   name: "getTrainingModules",
   description:

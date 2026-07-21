@@ -1,11 +1,5 @@
 import User from "../models/user.model.js";
 
-/**
- * Tool: getAssignedMentor
- * Returns a list of available onboarding managers/mentors in the company.
- *
- * @returns {Array<{ name, email }>}
- */
 export async function getAssignedMentor() {
   try {
     const mentors = await User.find({ role: "mentor" })
@@ -26,7 +20,6 @@ export async function getAssignedMentor() {
   }
 }
 
-// Gemini Function Declaration for this tool
 export const getAssignedMentorDeclaration = {
   name: "getAssignedMentor",
   description:

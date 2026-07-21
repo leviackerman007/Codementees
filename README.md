@@ -4,7 +4,7 @@
 
 ---
 
-## 👥 Demo Login Credentials (For Recruiters)
+## 👥 Demo Login Credentials
 
 To quickly test the platform without signing up, use these seeded credentials:
 

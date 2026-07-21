@@ -1,13 +1,5 @@
 import KnowledgeDocument from "../models/knowledge.model.js";
 
-/**
- * Tool: searchPolicies
- * Searches the company knowledge base for documents relevant to the query.
- * Falls back to the 3 most recent documents if no text-search matches.
- *
- * @param {Object} context - { query: string }
- * @returns {Array<{ title, category, content }>}
- */
 export async function searchPolicies({ query }) {
   try {
     let docs = await KnowledgeDocument.find(
@@ -18,11 +10,9 @@ export async function searchPolicies({ query }) {
       .limit(4)
       .lean();
 
+    // Fall back to recent docs if nothing matched the search
     if (docs.length === 0) {
-      docs = await KnowledgeDocument.find()
-        .sort({ createdAt: -1 })
-        .limit(3)
-        .lean();
+      docs = await KnowledgeDocument.find().sort({ createdAt: -1 }).limit(3).lean();
     }
 
     return docs.map((d) => ({
@@ -36,7 +26,6 @@ export async function searchPolicies({ query }) {
   }
 }
 
-// Gemini Function Declaration for this tool
 export const searchPoliciesDeclaration = {
   name: "searchPolicies",
   description:
@@ -46,8 +35,7 @@ export const searchPoliciesDeclaration = {
     properties: {
       query: {
         type: "STRING",
-        description:
-          "The search query to find relevant company documents, e.g. 'PTO policy' or 'engineering guidelines'",
+        description: "The search query to find relevant company documents, e.g. 'PTO policy' or 'engineering guidelines'",
       },
     },
     required: ["query"],
