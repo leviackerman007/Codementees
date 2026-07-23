@@ -113,10 +113,15 @@ export default function DashboardLayout() {
                 <div className="mt-auto p-4 border-t" style={{ borderColor: "rgba(var(--dash-border))" }}>
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="w-full py-2 px-3 text-xs font-semibold rounded-lg transition duration-200"
+                        title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+                        className="w-full py-2 px-3 text-xs font-semibold rounded-lg transition duration-200 flex items-center justify-center gap-1.5 overflow-hidden"
                         style={{ background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.2)", color: "rgb(249,115,22)" }}
                     >
-                        {sidebarOpen ? '← Collapse' : '→ Expand'}
+                        {sidebarOpen ? (
+                            <><span>&#8249;</span><span>Collapse</span></>
+                        ) : (
+                            <span style={{ fontSize: "1rem" }}>&#8250;</span>
+                        )}
                     </button>
                 </div>
             </aside>
@@ -204,10 +209,13 @@ export default function DashboardLayout() {
                             <p className="text-sm text-muted">Track progress and manage your workspace.</p>
                         </div>
                         <div className="flex items-center gap-4">
-                            <span className="text-sm" style={{ color: "rgb(var(--dash-muted))" }}>
-                                Role: <span className="font-semibold capitalize" style={{ color: "rgb(var(--dash-ink))" }}>{user?.role}</span>
+                            <span className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
+                                Role:{" "}
+                                <span className="font-bold capitalize" style={{ color: "#ffffff" }}>
+                                    {user?.role}
+                                </span>
                             </span>
-                            <Link to="/" className="dash-link text-sm">
+                            <Link to="/" className="dash-link text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
                                 ← Back to site
                             </Link>
                             <button onClick={logout} className="dash-btn">
