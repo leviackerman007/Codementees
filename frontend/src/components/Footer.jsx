@@ -1,72 +1,70 @@
-import { Link } from 'react-router-dom'
-
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
-        <footer className='bg-gray-900 text-gray-300'>
-            {/* TOP SECTION */}
-            <div className='max-w-7xl mx-auto px-6 py-16 grid gap-10 md:grid-cols-4'>
-                {/* BRAND */}
-                <div>
-                    <h2 className="text-xl font-bold text-white mb-4">Codementees</h2>
-                    <p className='text-gray-400 text-sm leading-relaxed'> Learn industry-ready skills with structured programs,
-            real-world projects, and expert mentorship.</p>
+        <footer style={{ background: "rgb(0,0,0)", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+            <div className="max-w-7xl mx-auto px-6 md:px-10 py-14 grid gap-10 md:grid-cols-4">
+                {/* Brand */}
+                <div className="md:col-span-1">
+                    <div className="flex items-center gap-2 mb-4">
+                        <span className="w-7 h-7 rounded-md flex items-center justify-center text-black text-sm font-black"
+                            style={{ background: "rgb(249,115,22)" }}>O</span>
+                        <span className="text-xl font-black text-white tracking-tight">OnboardAI</span>
+                    </div>
+                    <p className="text-sm leading-relaxed" style={{ color: "rgb(100,100,100)" }}>
+                        AI-powered corporate onboarding. Ramp up new hires faster with structured paths and intelligent AI assistance.
+                    </p>
                 </div>
-                {/* LINKS */}
-                <div>
-                    <h3 className='text-white font-semibold mb-4'>
-                        Quick Links
-                    </h3>
-                    <ul className='space-y-2 text-sm'>
-                        <li><Link to="/" className='hover:text-white transition'>Home</Link></li>
-                        <li><Link to="/courses" className='hover:text-white transition'>Programs</Link></li>
 
-                        <li><Link to="/about" className='hover:text-white transition'>About</Link></li>
-                        <li><Link to="/contact" className='hover:text-white transition'>Contact</Link></li>
-                    </ul>
-                </div>
-                {/* PROGRAMS */}
+                {/* Platform */}
                 <div>
-                    <h3 className='text-white font-semibold mb-4'>
-                        Programs
-                    </h3>
-                    <ul className="space-y-2 text-sm text-gray-400">
-                        <li>Full Stack Development</li>
-                        <li>Data Science</li>
-                        <li>DSA & Interview Preparation</li>
-                        <li>Career Guidance</li>
+                    <h3 className="text-sm font-bold text-white mb-4">Platform</h3>
+                    <ul className="space-y-3 text-sm" style={{ color: "rgb(100,100,100)" }}>
+                        <li><Link to="/courses" className="hover:text-white transition-colors">Onboarding Paths</Link></li>
+                        <li><Link to="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
+                        <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
+                        <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
                     </ul>
                 </div>
 
-                {/* CONTACT */}
+                {/* Paths */}
                 <div>
-                    <h3 className='text-white font-semibold mb-4'>
-                        Contact
-                    </h3>
-                    <ul className="space-y-2 text-sm text-gray-400">
-                        <li>Email: support@codementees.com</li>
-                        <li>Phone: +91 98765 43210</li>
-                        <li>Location: India</li>
+                    <h3 className="text-sm font-bold text-white mb-4">Onboarding Areas</h3>
+                    <ul className="space-y-3 text-sm" style={{ color: "rgb(100,100,100)" }}>
+                        <li>Technical Setup</li>
+                        <li>HR &amp; Compliance</li>
+                        <li>Security Practices</li>
+                        <li>Company Culture</li>
+                    </ul>
+                </div>
+
+                {/* Contact */}
+                <div>
+                    <h3 className="text-sm font-bold text-white mb-4">Get Started</h3>
+                    <ul className="space-y-3 text-sm" style={{ color: "rgb(100,100,100)" }}>
+                        <li>support@onboardai.com</li>
+                        <li>India</li>
+                        <li className="pt-2">
+                            <Link to="/signup" className="btn btn-primary text-sm py-2 px-5 inline-flex">
+                                Explore Paths →
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </div>
-            {/* BOTTOM SECTION */}
-            <div className='border-t border-gray-800'>
-                <div className='max-w-7xl mx-auto px-6 py-4 text-sm text-gray-500 flex flex-col md:flex-row justify-between items-center'>
-                    <p>
-                        © {new Date().getFullYear()} Codementees. All rights reserved.
-                    </p>
 
-                    <div className='flex gap-4 mt-2 md:mt-0'>
-                        <Link to="/privacy" className='hover:text-white'>
-                            Privacy Policy
-                        </Link>
-                        <Link to="/terms" className='hover:text-white'>
-                            Terms of Service
-                        </Link>
+            {/* Bottom bar */}
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex flex-col md:flex-row justify-between items-center gap-2">
+                    <p className="text-xs" style={{ color: "rgb(70,70,70)" }}>
+                        © {new Date().getFullYear()} OnboardAI. All rights reserved.
+                    </p>
+                    <div className="flex gap-5 text-xs" style={{ color: "rgb(70,70,70)" }}>
+                        <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>
         </footer>
-    )
+    );
 }

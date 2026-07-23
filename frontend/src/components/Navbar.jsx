@@ -5,21 +5,11 @@ import { useTheme } from "../hooks/useTheme";
 import { useAuth } from "../hooks/useAuth";
 import ProfileDropdown from "./ProfileDropdown";
 
-/* Animated Burger / Close Icon */
 const MenuIcon = ({ open }) => (
   <div className="relative w-6 h-6">
-    <span
-      className={`absolute h-0.5 w-6 bg-current transition-all duration-300
-      ${open ? "rotate-45 top-3" : "top-1"}`}
-    />
-    <span
-      className={`absolute h-0.5 w-6 bg-current transition-all duration-300
-      ${open ? "opacity-0" : "top-3"}`}
-    />
-    <span
-      className={`absolute h-0.5 w-6 bg-current transition-all duration-300
-      ${open ? "-rotate-45 top-3" : "top-5"}`}
-    />
+    <span className={`absolute h-0.5 w-6 bg-current transition-all duration-300 ${open ? "rotate-45 top-3" : "top-1"}`} />
+    <span className={`absolute h-0.5 w-6 bg-current transition-all duration-300 ${open ? "opacity-0 top-3" : "top-3"}`} />
+    <span className={`absolute h-0.5 w-6 bg-current transition-all duration-300 ${open ? "-rotate-45 top-3" : "top-5"}`} />
   </div>
 );
 
@@ -27,174 +17,140 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
+
   return (
     <>
-      {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 surface border-b border-default">
-        <div className="flex justify-between items-center px-6 md:px-10 py-4">
-          {/* Logo */}
-          <Link to="/" className="text-xl font-bold bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text text-transparent">
+      {/* Navbar — transparent on black, exactly like Protocol */}
+      <nav className="sticky top-0 z-50"
+        style={{ background: "rgba(0,0,0,0.75)", borderBottom: "1px solid rgba(255,255,255,0.07)", backdropFilter: "blur(16px)" }}>
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-10 py-4">
+
+          {/* Logo — white with P icon style */}
+          <Link to="/" className="flex items-center gap-2 text-xl font-black tracking-tight text-white">
+            <span className="w-7 h-7 rounded-md flex items-center justify-center text-black text-sm font-black"
+              style={{ background: "rgb(249,115,22)" }}>
+              O
+            </span>
             OnboardAI
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex gap-6 font-medium text-secondary">
-            <Link className="hover:text-primary" to="/courses">Onboarding Paths</Link>
-
-            <Link className="hover:text-primary" to="/about">About</Link>
-            <Link className="hover:text-primary" to="/contact">Contact</Link>
+          {/* Desktop nav links — muted white like Protocol */}
+          <div className="hidden md:flex gap-8 text-sm font-medium" style={{ color: "rgb(160,160,160)" }}>
+            <Link className="hover:text-white transition-colors duration-200" to="/courses">Onboarding Paths</Link>
+            <Link className="hover:text-white transition-colors duration-200" to="/about">About Us</Link>
+            <Link className="hover:text-white transition-colors duration-200" to="/contact">Contact</Link>
           </div>
 
-
-          {/* Desktop Actions */}
-          <div className="hidden md:flex gap-4 items-center relative">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-md hover:opacity-80 transition"
-              aria-label="Toggle theme"
-            >
+          {/* Desktop actions */}
+          <div className="hidden md:flex gap-3 items-center">
+            <button onClick={toggleTheme}
+              className="p-2 rounded-lg transition text-white opacity-50 hover:opacity-100"
+              aria-label="Toggle theme">
               {theme === "dark" ? "🌙" : "☀️"}
             </button>
 
             {user ? (
               <>
-                <Link
-                  to='/dashboard'
-                  className="px-5 py-2 rounded-full border border-default hover:bg-surface transition"
-                >
+                <Link to="/dashboard"
+                  className="px-4 py-2 rounded-full text-sm font-semibold transition text-white"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}>
                   Dashboard
                 </Link>
                 <ProfileDropdown user={user} logout={logout} />
-              </>) : (<>
+              </>
+            ) : (
+              <>
                 <Link to="/login"
-                  className="text-secondary hover:text-primary">
+                  className="text-sm font-medium transition hover:text-white"
+                  style={{ color: "rgb(160,160,160)" }}>
                   Login
                 </Link>
-                <Link
-                  to="/signup"
-                  className="btn btn-primary"
-                >
-                  Join Now
+                {/* Orange pill CTA — exactly Protocol's "Explore Jobs" button */}
+                <Link to="/signup" className="btn btn-primary text-sm py-2 px-5">
+                  Explore Paths →
                 </Link>
               </>
             )}
           </div>
 
+          {/* Mobile burger */}
           <div className="md:hidden flex items-center gap-3">
             {user && (
-              <Link
-                to="/dashboard"
-                className="px-4 py-1.5 rounded-full border border-default text-sm"
-              >
+              <Link to="/dashboard"
+                className="px-3 py-1.5 rounded-full text-sm font-semibold text-white"
+                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}>
                 Dashboard
               </Link>
             )}
-            {/* Mobile Burger */}
-            <button
-              onClick={() => setIsOpen(prev => !prev)}
-              aria-label="Open Menu"
-            >
+            <button onClick={() => setIsOpen(p => !p)} aria-label="Open Menu" className="text-white">
               <MenuIcon open={isOpen} />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* MOBILE SIDEBAR */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* BACKDROP BLUR */}
             <motion.div
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 md:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 z-40 md:hidden"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             />
-
-            {/* SIDEBAR PANEL */}
             <motion.div
-              className="fixed top-[64px] right-0 h-[calc(100%-50px)] w-72 surface-elevated shadow-xl z-[60] md:hidden"
-
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="fixed top-[65px] right-0 h-[calc(100%-65px)] w-72 z-[60] md:hidden overflow-y-auto"
+              style={{ background: "rgb(10,10,10)", borderLeft: "1px solid rgba(255,255,255,0.07)" }}
+              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+              transition={{ duration: 0.26, ease: "easeOut" }}
             >
-              <div className="px-6 py-6 flex flex-col gap-5 font-medium text-secondary">
+              <div className="px-6 py-6 flex flex-col gap-5 text-sm font-medium" style={{ color: "rgb(150,150,150)" }}>
                 {user && (
-                  <div className="flex items-center gap-3 pb-4 border-b border-default">
-                    <div className="w-10 h-10 rounded-full bg-primary text-bg flex items-center justify-center font-semibold">
+                  <div className="flex items-center gap-3 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-base"
+                      style={{ background: "rgb(249,115,22)" }}>
                       {user.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-medium">{user.name}</p>
-                      <p className="text-xs text-muted">{user.email}</p>
+                      <p className="font-semibold text-white">{user.name}</p>
+                      <p className="text-xs opacity-50">{user.email}</p>
                     </div>
                   </div>
                 )}
+
                 {user && (
                   <>
-                    <Link onClick={() => setIsOpen(false)} to="/dashboard">
-                      Dashboard
-                    </Link>
-                    {user.role==="mentor" && (
-                      <Link onClick={()=>setIsOpen(false)} to="/dashboard/mentor">
-                        Mentor Panel
-                      </Link>
+                    <Link onClick={() => setIsOpen(false)} to="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
+                    {user.role === "mentor" && (
+                      <Link onClick={() => setIsOpen(false)} to="/dashboard/mentor" className="hover:text-white transition-colors">Mentor Panel</Link>
                     )}
-                    {user.role==="admin" && (
-                      <Link onClick={()=>setIsOpen(false)} to="/dashboard/admin">
-                        Admin Panel
-                      </Link>
+                    {user.role === "admin" && (
+                      <Link onClick={() => setIsOpen(false)} to="/dashboard/admin" className="hover:text-white transition-colors">Admin Panel</Link>
                     )}
                   </>
                 )}
-                <Link onClick={() => setIsOpen(false)} to="/courses">Onboarding Paths</Link>
 
-                <Link onClick={() => setIsOpen(false)} to="/about">About</Link>
-                <Link onClick={() => setIsOpen(false)} to="/contact">Contact</Link>
+                <Link onClick={() => setIsOpen(false)} to="/courses" className="hover:text-white transition-colors">Onboarding Paths</Link>
+                <Link onClick={() => setIsOpen(false)} to="/about" className="hover:text-white transition-colors">About Us</Link>
+                <Link onClick={() => setIsOpen(false)} to="/contact" className="hover:text-white transition-colors">Contact</Link>
 
-                <button
-                  onClick={toggleTheme}
-                  className="flex items-center gap-2 text-secondary"
-                >
+                <button onClick={toggleTheme} className="flex items-center gap-2 hover:text-white transition-colors">
                   <span>{theme === "dark" ? "🌙" : "☀️"}</span>
                   <span>Toggle Theme</span>
                 </button>
 
                 {user ? (
-                  <>
-                    <span className="text-sm">
-                      Hi, {user.name}
-                    </span>
-
-                    <button
-                      onClick={() => {
-                        logout();
-                        setIsOpen(false);
-                      }}
-                      className="btn btn-secondary"
-                    >
-                      Logout
-                    </button>
-                  </>
+                  <button onClick={() => { logout(); setIsOpen(false); }}
+                    className="btn btn-secondary w-full justify-center mt-2 text-sm">
+                    Logout
+                  </button>
                 ) : (
-                  <>
-                    <div className="pt-4 border-t border-default flex flex-col gap-3">
-                      <Link onClick={() => setIsOpen(false)} to="/login">
-                        Login
-                      </Link>
-                      <Link
-                        onClick={() => setIsOpen(false)}
-                        to="/signup"
-                        className="btn btn-primary text-center"
-                      >
-                        Join Now
-                      </Link>
-                    </div>
-                  </>
+                  <div className="pt-4 flex flex-col gap-3 border-t" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+                    <Link onClick={() => setIsOpen(false)} to="/login" className="hover:text-white transition-colors">Login</Link>
+                    <Link onClick={() => setIsOpen(false)} to="/signup" className="btn btn-primary text-center text-sm">
+                      Explore Paths →
+                    </Link>
+                  </div>
                 )}
               </div>
             </motion.div>
