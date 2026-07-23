@@ -56,10 +56,25 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Manrope", "Inter", system-ui, sans-serif;
-  color: rgb(var(--text-primary));
   line-height: 1.1;
   letter-spacing: -0.03em;
+  /* color inherits from parent — use text-white / inline style on dark sections */
 }
+
+/* Default heading color for regular (light) context */
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  color: rgb(var(--text-primary));
+}
+
+/* In dark mode or on elements using text-white class, headings stay white */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: rgb(var(--text-primary));
+}
+
+/* Explicit white text wins over body default */
+[style*="color: #fff"] h1,
+[style*="color: #ffffff"] h1,
+.text-white { color: #ffffff !important; }
 
 p { color: rgb(var(--text-secondary)); }
 
