@@ -53,8 +53,9 @@ export default function StudentDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="flex justify-center items-center py-16">
+        <div className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin"
+          style={{ borderColor: "rgba(249,115,22,0.3)", borderTopColor: "rgb(249,115,22)" }} />
       </div>
     );
   }
@@ -118,9 +119,9 @@ export default function StudentDashboard() {
                 className="dash-card overflow-hidden flex flex-col justify-between"
               >
                 <div>
-                  <div className="p-4 text-white" style={{ background: "var(--dash-gradient)" }}>
-                    <h3 className="text-lg font-semibold mb-1 truncate">{course.title}</h3>
-                    <p className="text-sm opacity-90">
+                  <div className="p-4" style={{ background: "linear-gradient(135deg, rgba(249,115,22,0.9), rgba(234,88,12,1))" }}>
+                    <h3 className="text-lg font-bold mb-1 truncate text-white">{course.title}</h3>
+                    <p className="text-sm text-white/80">
                       by {course.createdBy?.name || "Onboarding Lead"}
                     </p>
                   </div>
@@ -131,18 +132,10 @@ export default function StudentDashboard() {
                     </p>
 
                     {course.techStack && course.techStack.length > 0 && (
-                      <div>
-                        <div className="flex flex-wrap gap-2">
-                          {course.techStack.slice(0, 3).map((tech) => (
-                            <span
-                              key={tech}
-                              className="px-2 py-1 text-xs rounded-full"
-                              style={{ background: "rgba(15, 118, 110, 0.12)", color: "rgb(var(--accent-strong))" }}
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="flex flex-wrap gap-2">
+                        {course.techStack.slice(0, 3).map((tech) => (
+                          <span key={tech} className="tag">{tech}</span>
+                        ))}
                       </div>
                     )}
 
@@ -163,18 +156,20 @@ export default function StudentDashboard() {
                     )}
 
                     {enrollment.assignedByAdmin && (
-                      <span className="text-xs text-teal-600 dark:text-teal-400 font-medium">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(249,115,22,0.1)", color: "rgb(249,115,22)", border: "1px solid rgba(249,115,22,0.2)" }}>
                         ✓ Assigned by HR
                       </span>
                     )}
 
                     <div>
-                      <div className="flex justify-between text-xs text-muted mb-1">
+                      <div className="flex justify-between text-xs mb-1.5" style={{ color: "rgb(var(--dash-muted))" }}>
                         <span>Progress</span>
-                        <span>{progress}%</span>
+                        <span className="font-bold" style={{ color: progress === 100 ? "rgb(34,197,94)" : "rgb(249,115,22)" }}>{progress}%</span>
                       </div>
-                      <div className="w-full rounded-full h-2 bg-slate-100 dark:bg-slate-800">
-                        <div className="h-2 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: "rgb(var(--accent-strong))" }}></div>
+                      <div className="w-full rounded-full h-1.5" style={{ background: "rgba(var(--dash-border))" }}>
+                        <div className="h-1.5 rounded-full transition-all duration-500"
+                          style={{ width: `${progress}%`, background: progress === 100 ? "rgb(34,197,94)" : "rgb(249,115,22)" }} />
                       </div>
                     </div>
                   </div>

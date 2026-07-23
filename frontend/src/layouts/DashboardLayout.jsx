@@ -203,10 +203,10 @@ export default function DashboardLayout() {
                 <header className="dashboard-topbar shadow hidden md:block sticky top-0 z-40">
                     <div className="flex justify-between items-center px-8 py-4">
                         <div>
-                            <h1 className="text-2xl font-bold text-dash-ink dark:text-white">
-                                Welcome, {user?.name}!
+                            <h1 className="text-2xl font-black" style={{ color: "#ffffff" }}>
+                                Welcome, {user?.name}! 👋
                             </h1>
-                            <p className="text-sm text-muted">Track progress and manage your workspace.</p>
+                            <p className="text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>Track progress and manage your workspace.</p>
                         </div>
                         <div className="flex items-center gap-4">
                             <span className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
