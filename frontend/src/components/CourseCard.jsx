@@ -14,10 +14,10 @@ export default function CourseCard({ course }) {
   const colors = levelColors[level] || levelColors.Beginner;
 
   return (
-    <div className="flex flex-col h-full rounded-2xl p-5 group cursor-default transition-all duration-250"
+    <div className="flex flex-col h-full rounded-2xl p-5 group"
       style={{
-        background: "rgb(14,14,14)",
-        border: "1px solid rgba(255,255,255,0.07)",
+        background: "rgb(var(--surface))",
+        border: "1px solid rgba(var(--border))",
         transition: "border-color 0.25s, transform 0.25s, box-shadow 0.25s",
       }}
       onMouseEnter={e => {
@@ -26,7 +26,7 @@ export default function CourseCard({ course }) {
         e.currentTarget.style.boxShadow = "0 12px 40px rgba(249,115,22,0.08)";
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+        e.currentTarget.style.borderColor = "rgba(var(--border))";
         e.currentTarget.style.transform = "translateY(0)";
         e.currentTarget.style.boxShadow = "none";
       }}

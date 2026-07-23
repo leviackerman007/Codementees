@@ -110,11 +110,11 @@ export default function DashboardLayout() {
                     )}
                 </nav>
 
-            {/* Toggle Sidebar */}
-                <div className="mt-auto p-4 border-t border-default">
+                <div className="mt-auto p-4 border-t" style={{ borderColor: "rgba(var(--dash-border))" }}>
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="w-full py-2.5 px-3 text-xs font-semibold bg-gradient-to-r from-teal-500/20 to-orange-500/20 border border-default rounded-lg hover:from-teal-500/30 hover:to-orange-500/30 transition duration-200 text-dash-ink dark:text-white"
+                        className="w-full py-2 px-3 text-xs font-semibold rounded-lg transition duration-200"
+                        style={{ background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.2)", color: "rgb(249,115,22)" }}
                     >
                         {sidebarOpen ? '← Collapse' : '→ Expand'}
                     </button>
@@ -204,22 +204,12 @@ export default function DashboardLayout() {
                             <p className="text-sm text-muted">Track progress and manage your workspace.</p>
                         </div>
                         <div className="flex items-center gap-4">
-                            <span className="text-sm text-muted">
-                                Role: <span className="font-semibold capitalize text-dash-ink dark:text-white">{user?.role}</span>
+                            <span className="text-sm" style={{ color: "rgb(var(--dash-muted))" }}>
+                                Role: <span className="font-semibold capitalize" style={{ color: "rgb(var(--dash-ink))" }}>{user?.role}</span>
                             </span>
-                            <Link
-                                to="/"
-                                className="dash-link text-sm"
-                            >
-                                Back to site
+                            <Link to="/" className="dash-link text-sm">
+                                ← Back to site
                             </Link>
-                            <button
-                                onClick={toggleTheme}
-                                className="dash-link text-sm"
-                                aria-label="Toggle theme"
-                            >
-                                {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-                            </button>
                             <button onClick={logout} className="dash-btn">
                                 Logout
                             </button>

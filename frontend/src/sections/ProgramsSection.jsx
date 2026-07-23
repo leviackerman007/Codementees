@@ -25,7 +25,7 @@ export default function ProgramsSection() {
     }, []);
 
     return (
-        <section className="relative py-24" style={{ background: "rgb(8,8,8)" }}>
+        <section className="relative py-24" style={{ background: "rgb(var(--surface))" }}>
             {/* Subtle orange glow bottom-right */}
             <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full pointer-events-none"
                 style={{ background: "radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)", filter: "blur(40px)" }} />

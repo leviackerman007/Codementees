@@ -38,7 +38,7 @@ const features = [
 
 export default function StatsSection() {
     return (
-        <section className="relative py-24" style={{ background: "rgb(0,0,0)" }}>
+        <section className="relative py-24" style={{ background: "rgb(var(--bg))" }}>
             {/* Top divider line */}
             <div className="absolute top-0 left-0 right-0 h-px"
                 style={{ background: "linear-gradient(to right, transparent, rgba(249,115,22,0.3), transparent)" }} />
@@ -78,9 +78,9 @@ export default function StatsSection() {
                                 viewport={{ once: true }}
                                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                                 className="p-6 rounded-2xl group cursor-default"
-                                style={{ background: "rgb(14,14,14)", border: "1px solid rgba(255,255,255,0.07)", transition: "border-color 0.25s" }}
+                                style={{ background: "var(--surface)", border: "1px solid rgba(var(--border))", transition: "border-color 0.25s" }}
                                 onMouseEnter={e => e.currentTarget.style.borderColor = item.border}
-                                onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"}
+                                onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(var(--border))"}
                             >
                                 <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
                                     style={{ background: item.glow, border: `1px solid ${item.border}` }}>

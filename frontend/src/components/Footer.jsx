@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
-        <footer style={{ background: "rgb(0,0,0)", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+        <footer style={{ background: "rgb(var(--bg))", borderTop: "1px solid rgba(var(--border))" }}>
             <div className="max-w-7xl mx-auto px-6 md:px-10 py-14 grid gap-10 md:grid-cols-4">
                 {/* Brand */}
                 <div className="md:col-span-1">

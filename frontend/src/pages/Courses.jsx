@@ -50,7 +50,7 @@ export default function Courses() {
   }, [activeCategory, search, courses]);
 
   return (
-    <div style={{ background: "rgb(0,0,0)", minHeight: "100vh" }}>
+    <div style={{ background: "rgb(var(--bg))", minHeight: "100vh" }}>
       {/* Page header */}
       <div className="relative overflow-hidden border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
         {/* Orange glow behind header */}

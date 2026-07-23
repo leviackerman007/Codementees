@@ -5,23 +5,25 @@
 
 /* ─── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --bg:             0 0 0;
-  --surface:        14 14 14;
-  --surface-2:      20 20 20;
-  --text-primary:   255 255 255;
-  --text-secondary: 160 160 160;
-  --border:         255 255 255 / 0.09;
-  --accent:         249 115 22;       /* orange-500 */
-  --accent-dark:    234 88 12;        /* orange-600 */
+  /* ── Light mode ── */
+  --bg:             252 250 248;      /* warm off-white */
+  --surface:        255 255 255;
+  --surface-2:      245 243 240;
+  --text-primary:   15 12 9;
+  --text-secondary: 100 90 80;
+  --border:         15 12 9 / 0.1;
+  --accent:         249 115 22;
+  --accent-dark:    234 88 12;
 
-  /* Dashboard tokens (slightly lighter for usability) */
-  --dash-bg:        8 8 8;
-  --dash-panel:     14 14 14;
-  --dash-ink:       240 240 240;
-  --dash-muted:     140 140 140;
-  --dash-border:    255 255 255 / 0.08;
+  /* Dashboard light */
+  --dash-bg:        245 243 240;
+  --dash-panel:     255 255 255;
+  --dash-ink:       15 12 9;
+  --dash-muted:     110 100 90;
+  --dash-border:    15 12 9 / 0.08;
 
   @variant dark {
+    /* ── Dark mode ── */
     --bg:             0 0 0;
     --surface:        14 14 14;
     --surface-2:      20 20 20;
@@ -29,6 +31,7 @@
     --text-secondary: 155 155 155;
     --border:         255 255 255 / 0.09;
 
+    /* Dashboard dark */
     --dash-bg:        8 8 8;
     --dash-panel:     14 14 14;
     --dash-ink:       240 240 240;
