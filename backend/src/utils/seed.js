@@ -299,7 +299,7 @@ const seedDatabase = async () => {
       {
         title: "Security & Acceptable Use Policy",
         content: "All employees must use company-approved devices for work. VPN is required when accessing internal systems remotely. Passwords must be stored in 1Password and must be at least 16 characters with MFA enabled. Suspected phishing emails should be reported to security@company.com immediately. Sharing credentials is strictly prohibited.",
-        category: "security",
+        category: "technical",
         uploadedBy: adminUser._id,
         fileName: "security_policy.txt",
       },
@@ -313,7 +313,7 @@ const seedDatabase = async () => {
       {
         title: "Expense Reimbursement Policy",
         content: "Expenses up to $100 can be submitted without pre-approval. Expenses above $100 require manager sign-off before purchase. All expenses must be submitted within 30 days with valid receipts via Workday. Software subscriptions require IT approval before purchase.",
-        category: "finance",
+        category: "general",
         uploadedBy: adminUser._id,
         fileName: "expense_policy.txt",
       },
