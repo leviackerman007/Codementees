@@ -52,8 +52,7 @@ export default function Courses() {
   return (
     <div style={{ background: "rgb(var(--bg))", minHeight: "100vh" }}>
       {/* Page header */}
-      <div className="relative overflow-hidden border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-        {/* Orange glow behind header */}
+      <div className="relative overflow-hidden border-b" style={{ borderColor: "rgba(var(--border))" }}>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-40 pointer-events-none"
           style={{ background: "radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 70%)", filter: "blur(30px)" }} />
 
@@ -63,8 +62,8 @@ export default function Courses() {
               style={{ background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.25)", color: "rgb(249,115,22)" }}>
               Onboarding Library
             </span>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-3">Onboarding Paths</h1>
-            <p className="text-base" style={{ color: "rgb(140,140,140)", maxWidth: "32rem" }}>
+            <h1 className="text-4xl md:text-5xl font-black mb-3" style={{ color: "rgb(var(--text-primary))" }}>Onboarding Paths</h1>
+            <p className="text-base" style={{ color: "rgb(var(--text-secondary))", maxWidth: "32rem" }}>
               Structured training modules and knowledge bases to ramp up new hires fast.
             </p>
           </motion.div>

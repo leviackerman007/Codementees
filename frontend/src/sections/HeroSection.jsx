@@ -83,8 +83,8 @@ export default function HeroSection() {
                             initial={{ opacity: 0, y: 28 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.65, delay: 0.07, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-5xl md:text-6xl lg:text-7xl font-black leading-none mb-6 text-white"
-                            style={{ letterSpacing: "-0.04em" }}
+                            className="text-5xl md:text-6xl lg:text-7xl font-black leading-none mb-6"
+                            style={{ letterSpacing: "-0.04em", color: "#ffffff" }}
                         >
                             The AI Platform
                             <br />
@@ -99,7 +99,7 @@ export default function HeroSection() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.55, delay: 0.15 }}
                             className="text-base md:text-lg leading-relaxed mb-10"
-                            style={{ color: "rgb(145,145,145)", maxWidth: "30rem" }}
+                            style={{ color: "rgba(255,255,255,0.55)", maxWidth: "30rem" }}
                         >
                             OnboardAI uses AI agents to surface company knowledge, guide employees
                             through structured paths, and answer real questions — before the crowd arrives.

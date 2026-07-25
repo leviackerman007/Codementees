@@ -45,15 +45,15 @@ export default function CourseCard({ course }) {
       </div>
 
       {/* Title */}
-      <h3 className="text-base font-bold leading-snug mb-2 text-white transition-colors duration-200"
-        style={{ color: "#ffffff" }}
+      <h3 className="text-base font-bold leading-snug mb-2 transition-colors duration-200"
+        style={{ color: "rgb(var(--text-primary))" }}
         onMouseEnter={e => e.currentTarget.style.color = "rgb(249,115,22)"}
-        onMouseLeave={e => e.currentTarget.style.color = "#ffffff"}>
+        onMouseLeave={e => e.currentTarget.style.color = "rgb(var(--text-primary))"}>
         {course.title}
       </h3>
 
       {/* Description */}
-      <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: "rgb(130,130,130)", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+      <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: "rgb(var(--text-secondary))", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
         {course.description}
       </p>
 
